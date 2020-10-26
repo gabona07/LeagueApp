@@ -6,6 +6,9 @@ import com.example.leagueapp.RetrofitProvider;
 import com.example.leagueapp.contract.BaseContract;
 import com.example.leagueapp.contract.ChampionContract;
 import com.example.leagueapp.model.ChampionResponse;
+
+import java.util.ArrayList;
+
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -32,8 +35,8 @@ public class ChampionPresenter implements ChampionContract.ChampionPresenter {
 
             @Override
             public void onSuccess(ChampionResponse championResponse) {
-                System.out.println(championResponse.data.toString());
-                System.out.println("Success");
+                ArrayList<ChampionResponse.Champion> champions = new ArrayList<>(championResponse.data.values());
+                view.displayChampions(champions);
             }
 
             @Override

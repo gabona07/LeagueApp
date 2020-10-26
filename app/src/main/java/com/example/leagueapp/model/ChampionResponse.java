@@ -6,17 +6,19 @@ public class ChampionResponse {
     public Map<String, Champion> data;
 
 
-    class Champion {
+    public class Champion {
         String id;
         String name;
         String title;
         String blurb;
+        Image image;
 
-        public Champion(String id, String name, String title, String blurb) {
+        public Champion(String id, String name, String title, String blurb, Image image) {
             this.id = id;
             this.name = name;
             this.title = title;
             this.blurb = blurb;
+            this.image = image;
         }
 
         @Override
@@ -27,6 +29,26 @@ public class ChampionResponse {
                     ", title='" + title + '\'' +
                     ", blurb='" + blurb + '\'' +
                     '}';
+        }
+
+        public class Image {
+            String full;
+
+            public Image(String full) {
+                this.full = full;
+            }
+
+            public String getFull() {
+                return full;
+            }
+
+            public void setFull(String full) {
+                this.full = full;
+            }
+
+            public String getIconUrl() {
+                return "https://ddragon.leagueoflegends.com/cdn/10.21.1/img/champion/" + getFull();
+            }
         }
 
         public String getId() {
@@ -59,6 +81,14 @@ public class ChampionResponse {
 
         public void setBlurb(String blurb) {
             this.blurb = blurb;
+        }
+
+        public Image getImage() {
+            return image;
+        }
+
+        public void setImage(Image image) {
+            this.image = image;
         }
     }
 }
