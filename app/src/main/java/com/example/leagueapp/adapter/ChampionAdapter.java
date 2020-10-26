@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,10 +23,15 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
     class ViewHolder extends RecyclerView.ViewHolder {
 
         final ImageView championIcon;
+        final TextView championName;
+        final TextView championBlurb;
+
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             championIcon = itemView.findViewById(R.id.champion_icon);
+            championName = itemView.findViewById(R.id.championName);
+            championBlurb = itemView.findViewById(R.id.championBlurb);
         }
     }
 
@@ -40,6 +46,8 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ChampionResponse.Champion currentChampion = champions.get(position);
         picasso.load(currentChampion.getImage().getIconUrl()).into(holder.championIcon);
+        holder.championName.setText(currentChampion.getName());
+        holder.championBlurb.setText(currentChampion.getBlurb());
     }
 
     @Override

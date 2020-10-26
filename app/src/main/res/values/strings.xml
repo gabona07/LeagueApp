@@ -6,4 +6,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="champion_details">Champion Details</string>
+    <string name="champ_name">Champ Name</string>
+    <string name="this_is_a_looong_text">This is a looong text...</string>
 </resources>

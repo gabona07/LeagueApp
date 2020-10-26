@@ -1,14 +1,11 @@
 package com.example.leagueapp.presenter;
 
-
 import com.example.leagueapp.ApiService;
 import com.example.leagueapp.RetrofitProvider;
 import com.example.leagueapp.contract.BaseContract;
 import com.example.leagueapp.contract.ChampionContract;
 import com.example.leagueapp.model.ChampionResponse;
-
 import java.util.ArrayList;
-
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
