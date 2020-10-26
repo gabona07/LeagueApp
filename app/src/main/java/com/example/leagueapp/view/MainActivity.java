@@ -1,8 +1,8 @@
-package com.example.leagueapp;
+package com.example.leagueapp.view;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+import com.example.leagueapp.R;
 
 public class MainActivity extends AppCompatActivity {
 
