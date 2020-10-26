@@ -24,14 +24,14 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
 
         final ImageView championIcon;
         final TextView championName;
-        final TextView championBlurb;
+        final TextView championTitle;
 
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            championIcon = itemView.findViewById(R.id.champion_icon);
+            championIcon = itemView.findViewById(R.id.championIcon);
             championName = itemView.findViewById(R.id.championName);
-            championBlurb = itemView.findViewById(R.id.championBlurb);
+            championTitle = itemView.findViewById(R.id.championTitle);
         }
     }
 
@@ -47,7 +47,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
         ChampionResponse.Champion currentChampion = champions.get(position);
         picasso.load(currentChampion.getImage().getIconUrl()).into(holder.championIcon);
         holder.championName.setText(currentChampion.getName());
-        holder.championBlurb.setText(currentChampion.getBlurb());
+        holder.championTitle.setText(currentChampion.getTitle());
     }
 
     @Override
