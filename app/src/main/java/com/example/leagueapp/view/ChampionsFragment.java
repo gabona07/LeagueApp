@@ -1,4 +1,4 @@
-package com.example.leagueapp;
+package com.example.leagueapp.view;
 
 import android.os.Bundle;
 
@@ -7,15 +7,18 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import com.example.leagueapp.R;
+import com.example.leagueapp.contract.ChampionContract;
+import com.example.leagueapp.presenter.ChampionPresenter;
 
 
-public class ChampionsFragment extends Fragment {
+public class ChampionsFragment extends Fragment implements ChampionContract.ChampionView {
 
+    private ChampionContract.ChampionPresenter presenter = new ChampionPresenter();
 
     public ChampionsFragment() {
         // Required empty public constructor
@@ -32,6 +35,8 @@ public class ChampionsFragment extends Fragment {
                 Navigation.findNavController(view).navigate(action);
             }
         });
+        presenter.onAttach(this);
+        presenter.fetchChampions();
     }
 
     @Override
@@ -39,5 +44,10 @@ public class ChampionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_champions, container, false);
+    }
+
+    @Override
+    public void onError(Exception exception) {
+
     }
 }
