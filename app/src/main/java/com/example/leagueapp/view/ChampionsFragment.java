@@ -9,6 +9,7 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +23,11 @@ import com.example.leagueapp.presenter.ChampionPresenter;
 import java.util.ArrayList;
 
 
-public class ChampionsFragment extends Fragment implements ChampionContract.ChampionView {
+public class ChampionsFragment extends Fragment implements ChampionContract.ChampionView, ChampionAdapter.OnChampClickListener {
 
+    private static final String TAG = "ChampionsFragment";
     private ChampionContract.ChampionPresenter presenter = new ChampionPresenter();
-    private ChampionAdapter championAdapter = new ChampionAdapter();
+    private ChampionAdapter championAdapter = new ChampionAdapter(this);
 
     public ChampionsFragment() {
         // Required empty public constructor
@@ -38,8 +40,6 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
 //        detailsButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//                NavDirections action = ChampionsFragmentDirections.actionChampionsFragmentToDetailsFragment();
-//                Navigation.findNavController(view).navigate(action);
 //            }
 //        });
         RecyclerView championRecyclerView = view.findViewById(R.id.champion_recycler_view);
@@ -63,5 +63,17 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     @Override
     public void displayChampions(ArrayList<ChampionResponse.Champion> champions) {
         championAdapter.setChampionList(champions);
+    }
+
+    @Override
+    public void onChampClick(String championName) {
+        Log.d(TAG, "onChampClick: " + championName);
+        NavDirections action = ChampionsFragmentDirections.actionChampionsFragmentToDetailsFragment();
+        Navigation.findNavController(getView()).navigate(action);
+    }
+
+    @Override
+    public void addToFavorite(ChampionResponse.Champion champion) {
+        Log.d(TAG, "addToFavorite: " + champion.toString());
     }
 }

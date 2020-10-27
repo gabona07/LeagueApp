@@ -17,21 +17,41 @@ import java.util.ArrayList;
 
 public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHolder> {
 
+    private OnChampClickListener onChampClickListener;
     private ArrayList<ChampionResponse.Champion> champions = new ArrayList<>();
     private Picasso picasso = Picasso.get();
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    public ChampionAdapter(OnChampClickListener onChampClickListener) {
+        this.onChampClickListener = onChampClickListener;
+    }
 
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        OnChampClickListener onChampClickListener;
         final ImageView championIcon;
         final TextView championName;
         final TextView championTitle;
 
 
-        ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView, OnChampClickListener onChampClickListener) {
             super(itemView);
+            this.onChampClickListener = onChampClickListener;
             championIcon = itemView.findViewById(R.id.championIcon);
             championName = itemView.findViewById(R.id.championName);
             championTitle = itemView.findViewById(R.id.championTitle);
+            itemView.setOnClickListener(this);
+            itemView.findViewById(R.id.favoriteButton).setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (view.getId() == R.id.favoriteButton) {
+                ChampionResponse.Champion champion = champions.get(getAdapterPosition());
+                onChampClickListener.addToFavorite(champion);
+            } else {
+                String name = championName.getText().toString();
+                onChampClickListener.onChampClick(name);
+            }
         }
     }
 
@@ -39,7 +59,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.champion_item, parent, false);
-        return new ViewHolder(itemView);
+        return new ViewHolder(itemView, onChampClickListener);
     }
 
     @Override
@@ -58,5 +78,10 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
     public void setChampionList(ArrayList<ChampionResponse.Champion> championList) {
         this.champions = championList;
         notifyItemRangeChanged(0, championList.size());
+    }
+
+    public interface OnChampClickListener {
+        void onChampClick(String championName);
+        void addToFavorite(ChampionResponse.Champion champion);
     }
 }
