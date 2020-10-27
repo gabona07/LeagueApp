@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,17 +29,18 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
 
     private static final String TAG = "ChampionsFragment";
     private ProgressBar loadingBar;
+    private NavController navController;
     private ChampionContract.ChampionPresenter presenter = new ChampionPresenter();
     private ChampionAdapter championAdapter = new ChampionAdapter(this);
 
     public ChampionsFragment() {
         // Required empty public constructor
+        presenter.onAttach(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_champions, container, false);
     }
 
@@ -48,8 +50,10 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         loadingBar = view.findViewById(R.id.championsLoading);
         RecyclerView championRecyclerView = view.findViewById(R.id.championsRecyclerView);
         championRecyclerView.setAdapter(championAdapter);
-        presenter.onAttach(this);
-        presenter.fetchChampions();
+        navController = Navigation.findNavController(view);
+        // Navigation Component always rebuilds the fragment's view,
+        // so this is a workaround to prevent fetching the champions again (we could also use LiveData)
+        if (!championAdapter.hasChampions()) presenter.fetchChampions();
     }
 
     @Override
@@ -82,7 +86,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     public void onChampClick(String championName) {
         Log.d(TAG, "onChampClick: " + championName);
         NavDirections action = ChampionsFragmentDirections.actionChampionsFragmentToDetailsFragment();
-        Navigation.findNavController(getView()).navigate(action);
+        navController.navigate(action);
     }
 
     @Override
