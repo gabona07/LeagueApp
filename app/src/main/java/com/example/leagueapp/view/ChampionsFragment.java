@@ -5,9 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -29,7 +28,6 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
 
     private static final String TAG = "ChampionsFragment";
     private ProgressBar loadingBar;
-    private NavController navController;
     private ChampionContract.ChampionPresenter presenter = new ChampionPresenter();
     private ChampionAdapter championAdapter = new ChampionAdapter(this);
 
@@ -50,7 +48,6 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         loadingBar = view.findViewById(R.id.championsLoading);
         RecyclerView championRecyclerView = view.findViewById(R.id.championsRecyclerView);
         championRecyclerView.setAdapter(championAdapter);
-        navController = Navigation.findNavController(view);
         // Navigation Component always rebuilds the fragment's view,
         // so this is a workaround to prevent fetching the champions again (we could also use LiveData)
         if (!championAdapter.hasChampions()) presenter.fetchChampions();
@@ -86,7 +83,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     public void onChampClick(String championName) {
         Log.d(TAG, "onChampClick: " + championName);
         NavDirections action = ChampionsFragmentDirections.actionChampionsFragmentToDetailsFragment();
-        navController.navigate(action);
+        NavHostFragment.findNavController(this).navigate(action);
     }
 
     @Override
