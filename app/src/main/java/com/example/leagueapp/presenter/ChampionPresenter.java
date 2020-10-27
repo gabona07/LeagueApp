@@ -21,6 +21,7 @@ public class ChampionPresenter implements ChampionContract.ChampionPresenter {
 
     @Override
     public void fetchChampions() {
+        view.showLoading();
         Single<ChampionResponse> championResponse = retrofit.create(ApiService.class).getChampions();
         championResponse.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -32,6 +33,7 @@ public class ChampionPresenter implements ChampionContract.ChampionPresenter {
 
             @Override
             public void onSuccess(ChampionResponse championResponse) {
+                view.hideLoading();
                 ArrayList<ChampionResponse.Champion> champions = new ArrayList<>(championResponse.data.values());
                 view.displayChampions(champions);
             }
