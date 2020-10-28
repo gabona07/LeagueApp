@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -59,7 +61,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         loadingBar = view.findViewById(R.id.championsLoading);
         RecyclerView championRecyclerView = view.findViewById(R.id.championsRecyclerView);
         championRecyclerView.setAdapter(championAdapter);
-        toolBarInit(view);
+        toolbarInit(view);
         // Navigation Component always rebuilds the fragment's view,
         // so this is a workaround to prevent fetching the champions again (we could also use LiveData)
         if (!championAdapter.hasChampions()) presenter.fetchChampions();
@@ -102,10 +104,21 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         Log.d(TAG, "addToFavorite: " + champion.toString());
     }
 
-    private void toolBarInit(View view) {
-        NavController navController = Navigation.findNavController(view);
+    private void toolbarInit(View view) {
+        final NavController navController = Navigation.findNavController(view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         MaterialToolbar toolbar = view.findViewById(R.id.championsAppBar);
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.favorite) {
+                    NavDirections action = ChampionsFragmentDirections.actionChampionsFragmentToFavoriteFragment();
+                    navController.navigate(action);
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 }
