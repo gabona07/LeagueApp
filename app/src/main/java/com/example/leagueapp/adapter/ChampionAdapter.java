@@ -1,5 +1,6 @@
 package com.example.leagueapp.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +79,10 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
     public void setChampionList(ArrayList<ChampionResponse.Champion> championList) {
         this.champions = championList;
         notifyItemRangeChanged(0, championList.size());
+    }
+
+    public Boolean hasChampions() {
+        return !champions.isEmpty();
     }
 
     public interface OnChampClickListener {

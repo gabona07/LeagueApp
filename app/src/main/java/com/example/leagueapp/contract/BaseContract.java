@@ -8,6 +8,8 @@ public interface BaseContract {
     }
 
     interface BaseView {
+        void showLoading();
+        void hideLoading();
         void onError(Exception exception);
     }
 }
