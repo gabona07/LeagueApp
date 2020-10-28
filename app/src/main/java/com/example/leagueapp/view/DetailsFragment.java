@@ -2,16 +2,26 @@ package com.example.leagueapp.view;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.leagueapp.R;
+import com.google.android.material.appbar.MaterialToolbar;
 
 
 public class DetailsFragment extends Fragment {
+
+    private static final String TAG = "DetailsFragment";
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -20,7 +30,23 @@ public class DetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_details, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        toolbarInit(view);
+        if (getArguments() != null) {
+            String championName = DetailsFragmentArgs.fromBundle(getArguments()).getChampionName();
+            Log.d(TAG, "Champion name: " + championName);
+        }
+    }
+
+    private void toolbarInit(View view) {
+        NavController navController = Navigation.findNavController(view);
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+        MaterialToolbar toolbar = view.findViewById(R.id.detailsAppBar);
+        NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
     }
 }

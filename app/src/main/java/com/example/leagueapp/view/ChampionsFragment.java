@@ -5,8 +5,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -20,6 +24,7 @@ import com.example.leagueapp.adapter.ChampionAdapter;
 import com.example.leagueapp.contract.ChampionContract;
 import com.example.leagueapp.model.ChampionResponse;
 import com.example.leagueapp.presenter.ChampionPresenter;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
 
@@ -33,7 +38,13 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
 
     public ChampionsFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         presenter.onAttach(this);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -48,6 +59,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         loadingBar = view.findViewById(R.id.championsLoading);
         RecyclerView championRecyclerView = view.findViewById(R.id.championsRecyclerView);
         championRecyclerView.setAdapter(championAdapter);
+        toolBarInit(view);
         // Navigation Component always rebuilds the fragment's view,
         // so this is a workaround to prevent fetching the champions again (we could also use LiveData)
         if (!championAdapter.hasChampions()) presenter.fetchChampions();
@@ -81,13 +93,19 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
 
     @Override
     public void onChampClick(String championName) {
-        Log.d(TAG, "onChampClick: " + championName);
-        NavDirections action = ChampionsFragmentDirections.actionChampionsFragmentToDetailsFragment();
+        NavDirections action = ChampionsFragmentDirections.actionChampionsFragmentToDetailsFragment(championName);
         NavHostFragment.findNavController(this).navigate(action);
     }
 
     @Override
     public void addToFavorite(ChampionResponse.Champion champion) {
         Log.d(TAG, "addToFavorite: " + champion.toString());
+    }
+
+    private void toolBarInit(View view) {
+        NavController navController = Navigation.findNavController(view);
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+        MaterialToolbar toolbar = view.findViewById(R.id.championsAppBar);
+        NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
     }
 }
