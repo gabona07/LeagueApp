@@ -4,60 +4,41 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.leagueapp.R;
 import com.google.android.material.appbar.MaterialToolbar;
 
+public class FavoriteFragment extends Fragment {
 
-public class DetailsFragment extends Fragment {
-
-    private static final String TAG = "DetailsFragment";
-
-    public DetailsFragment() {
+    public FavoriteFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_details, container, false);
+        return inflater.inflate(R.layout.fragment_favorite, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         toolbarInit(view);
-        if (getArguments() != null) {
-            String championName = DetailsFragmentArgs.fromBundle(getArguments()).getChampionName();
-            Log.d(TAG, "Champion name: " + championName);
-        }
     }
 
     private void toolbarInit(View view) {
         final NavController navController = Navigation.findNavController(view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        MaterialToolbar toolbar = view.findViewById(R.id.detailsAppBar);
+        MaterialToolbar toolbar = view.findViewById(R.id.favoriteAppBar);
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                NavDirections action = DetailsFragmentDirections.actionDetailsFragmentToFavoriteFragment();
-                navController.navigate(action);
-                return true;
-            }
-        });
     }
 }

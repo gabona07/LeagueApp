@@ -1,6 +1,5 @@
 package com.example.leagueapp.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +8,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 import com.example.leagueapp.R;
 import com.example.leagueapp.model.ChampionResponse;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -20,7 +20,6 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
 
     private OnChampClickListener onChampClickListener;
     private ArrayList<ChampionResponse.Champion> champions = new ArrayList<>();
-    private Picasso picasso = Picasso.get();
 
     public ChampionAdapter(OnChampClickListener onChampClickListener) {
         this.onChampClickListener = onChampClickListener;
@@ -66,7 +65,9 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ChampionResponse.Champion currentChampion = champions.get(position);
-        picasso.load(currentChampion.getImage().getIconUrl()).into(holder.championIcon);
+        Glide.with(holder.championIcon)
+                .load(currentChampion.getImage().getIconUrl())
+                .into(holder.championIcon);
         holder.championName.setText(currentChampion.getName());
         holder.championTitle.setText(currentChampion.getTitle());
     }

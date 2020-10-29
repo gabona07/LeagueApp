@@ -8,15 +8,30 @@
     <fragment
         android:id="@+id/championsFragment"
         android:name="com.example.leagueapp.view.ChampionsFragment"
-        android:label="fragment_champions"
+        android:label="@string/champions"
         tools:layout="@layout/fragment_champions" >
         <action
             android:id="@+id/action_championsFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
+        <action
+            android:id="@+id/action_championsFragment_to_favoriteFragment"
+            app:destination="@id/favoriteFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.example.leagueapp.view.DetailsFragment"
-        android:label="fragment_details"
-        tools:layout="@layout/fragment_details" />
+        android:label="{championName}"
+        tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="championName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_detailsFragment_to_favoriteFragment"
+            app:destination="@id/favoriteFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.example.leagueapp.view.FavoriteFragment"
+        android:label="@string/favorites"
+        tools:layout="@layout/fragment_favorite" />
 </navigation>
