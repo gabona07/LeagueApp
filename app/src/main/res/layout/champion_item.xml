@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="@dimen/card_radius"
-    android:layout_margin="@dimen/card_margin">
+    android:layout_margin="@dimen/card_margin"
+    android:backgroundTint="?attr/colorSurface"
+    app:cardCornerRadius="@dimen/card_radius">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -13,8 +14,8 @@
 
         <ImageView
             android:id="@+id/championIcon"
-            android:layout_width="@dimen/image_width"
-            android:layout_height="@dimen/image_height"
+            android:layout_width="@dimen/champ_icon_size"
+            android:layout_height="@dimen/champ_icon_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -24,28 +25,36 @@
             android:id="@+id/championName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            app:layout_constraintBottom_toBottomOf="@id/championTitle"
+            android:layout_marginStart="@dimen/text_margin"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="?attr/colorOnSurface"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/championTitle"
             app:layout_constraintLeft_toRightOf="@+id/championIcon"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
             tools:text="Aatrox" />
 
         <TextView
             android:id="@+id/championTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
+            android:layout_marginStart="@dimen/text_margin"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="?attr/colorOnSurface"
+            android:textStyle="italic"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/championIcon"
-            app:layout_constraintTop_toTopOf="@id/championName"
+            app:layout_constraintTop_toBottomOf="@id/championName"
+            app:layout_constraintVertical_chainStyle="packed"
             tools:text="the Darkin Blade" />
 
         <ImageButton
             android:id="@+id/favoriteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_favorite_24dp"
-            android:layout_margin="@dimen/image_margin"
+            android:layout_marginEnd="@dimen/favorite_button_margin"
+            android:background="@drawable/ic_favorite_unselected"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

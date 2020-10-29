@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#222"
+    android:background="?attr/background"
     tools:context=".view.ChampionsFragment">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -34,6 +34,8 @@
         android:id="@+id/championsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="@dimen/recycler_view_padding"
+        android:paddingBottom="@dimen/recycler_view_padding"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:itemCount="15"
