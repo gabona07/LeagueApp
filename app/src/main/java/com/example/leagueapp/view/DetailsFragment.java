@@ -1,5 +1,6 @@
 package com.example.leagueapp.view;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,17 +18,32 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 
+import com.bumptech.glide.Glide;
 import com.example.leagueapp.R;
+import com.example.leagueapp.contract.ChampionContract;
+import com.example.leagueapp.model.DetailsResponse;
+import com.example.leagueapp.presenter.DetailsPresenter;
 import com.google.android.material.appbar.MaterialToolbar;
 
 
-public class DetailsFragment extends Fragment {
+public class DetailsFragment extends Fragment implements ChampionContract.DetailsView {
 
     private static final String TAG = "DetailsFragment";
+    private ProgressBar loadingBar;
+    private ImageView profileImage;
+    private ChampionContract.DetailsPresenter presenter = new DetailsPresenter();
 
     public DetailsFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        presenter.onAttach(this);
     }
 
     @Override
@@ -41,9 +57,17 @@ public class DetailsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         toolbarInit(view);
         if (getArguments() != null) {
+            profileImage = view.findViewById(R.id.profileImage);
+            //loadingBar = view.findViewById(R.id.championsLoading);
             String championName = DetailsFragmentArgs.fromBundle(getArguments()).getChampionName();
-            Log.d(TAG, "Champion name: " + championName);
+            presenter.fetchChampionDetails(championName);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
     }
 
     private void toolbarInit(View view) {
@@ -59,5 +83,26 @@ public class DetailsFragment extends Fragment {
                 return true;
             }
         });
+    }
+
+    @Override
+    public void displayChampionDetails(DetailsResponse.Detail champion) {
+        Log.d(TAG, "displayChampionDetails: " + champion.getImage().getFull());
+        Glide.with(profileImage).load(champion.getImage().getIconUrl()).into(profileImage);
+    }
+
+    @Override
+    public void showLoading() {
+        //loadingBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+        //loadingBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onError(Exception exception) {
+
     }
 }

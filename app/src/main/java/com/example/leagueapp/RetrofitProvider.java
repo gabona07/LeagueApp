@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitProvider {
 
     public static Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("https://ddragon.leagueoflegends.com/")
+            .baseUrl("https://ddragon.leagueoflegends.com/cdn/10.21.1/data/en_US/")
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .client(new OkHttpClient())

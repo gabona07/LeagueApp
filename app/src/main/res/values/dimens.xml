@@ -6,4 +6,6 @@
     <dimen name="card_margin">5dp</dimen>
     <dimen name="image_width">60dp</dimen>
     <dimen name="image_height">60dp</dimen>
+    <dimen name="detail_image_width">120dp</dimen>
+    <dimen name="detail_image_height">120dp</dimen>
 </resources>

@@ -35,7 +35,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
 
     private static final String TAG = "ChampionsFragment";
     private ProgressBar loadingBar;
-    private ChampionContract.ChampionPresenter presenter = new ChampionPresenter();
+    private ChampionContract.ChampionPresenter championPresenter = new ChampionPresenter();
     private ChampionAdapter championAdapter = new ChampionAdapter(this);
 
     public ChampionsFragment() {
@@ -45,7 +45,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter.onAttach(this);
+        championPresenter.onAttach(this);
         setHasOptionsMenu(true);
     }
 
@@ -64,12 +64,12 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         toolbarInit(view);
         // Navigation Component always rebuilds the fragment's view,
         // so this is a workaround to prevent fetching the champions again (we could also use LiveData)
-        if (!championAdapter.hasChampions()) presenter.fetchChampions();
+        if (!championAdapter.hasChampions()) championPresenter.fetchChampions();
     }
 
     @Override
     public void onDestroy() {
-        presenter.onDetach();
+        championPresenter.onDetach();
         super.onDestroy();
     }
 
