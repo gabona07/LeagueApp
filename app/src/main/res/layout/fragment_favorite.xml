@@ -1,27 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorAccent"
-    tools:context=".view.DetailsFragment">
+    android:background="@android:color/holo_red_dark"
+    tools:context=".view.FavoriteFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/detailsAppBar"
+            android:id="@+id/favoriteAppBar"
             style="@style/Widget.MaterialComponents.Toolbar.Primary"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:menu="@menu/details_app_bar"
             app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</FrameLayout>
