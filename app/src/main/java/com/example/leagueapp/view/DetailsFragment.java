@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.leagueapp.R;
@@ -34,6 +35,7 @@ public class DetailsFragment extends Fragment implements ChampionContract.Detail
     private static final String TAG = "DetailsFragment";
     private ProgressBar loadingBar;
     private ImageView profileImage;
+    private TextView championName;
     private ChampionContract.DetailsPresenter presenter = new DetailsPresenter();
 
     public DetailsFragment() {
@@ -58,6 +60,7 @@ public class DetailsFragment extends Fragment implements ChampionContract.Detail
         toolbarInit(view);
         if (getArguments() != null) {
             profileImage = view.findViewById(R.id.profileImage);
+            championName = view.findViewById(R.id.championName);
             //loadingBar = view.findViewById(R.id.championsLoading);
             String championName = DetailsFragmentArgs.fromBundle(getArguments()).getChampionName();
             presenter.fetchChampionDetails(championName);
@@ -89,6 +92,7 @@ public class DetailsFragment extends Fragment implements ChampionContract.Detail
     public void displayChampionDetails(DetailsResponse.Detail champion) {
         Log.d(TAG, "displayChampionDetails: " + champion.getImage().getFull());
         Glide.with(profileImage).load(champion.getImage().getIconUrl()).into(profileImage);
+        championName.setText(champion.getName());
     }
 
     @Override
