@@ -3,6 +3,8 @@ package com.example.leagueapp.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,16 +16,51 @@ import com.example.leagueapp.R;
 import com.example.leagueapp.model.ChampionResponse;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
-public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHolder> {
+public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHolder> implements Filterable {
 
     private OnChampClickListener onChampClickListener;
-    private ArrayList<ChampionResponse.Champion> champions = new ArrayList<>();
+    private List<ChampionResponse.Champion> championList = new ArrayList<>();
+    private List<ChampionResponse.Champion> championListFull = new ArrayList<>(championList);
 
     public ChampionAdapter(OnChampClickListener onChampClickListener) {
         this.onChampClickListener = onChampClickListener;
     }
+
+    @Override
+    public Filter getFilter() {
+        return championFilter;
+    }
+
+    private Filter championFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            List<ChampionResponse.Champion> filteredList = new ArrayList<>();
+            if (charSequence == null || charSequence.length() == 0) {
+                filteredList.addAll(championListFull);
+            } else {
+                String filterPattern = charSequence.toString().toLowerCase().trim();
+                for (ChampionResponse.Champion champion : championListFull) {
+                    if (champion.getName().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(champion);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            championList.clear();
+            championList.addAll((List<ChampionResponse.Champion>) filterResults.values);
+            notifyDataSetChanged();
+        }
+    }; 
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -46,7 +83,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
         @Override
         public void onClick(View view) {
             if (view.getId() == R.id.favoriteButton) {
-                ChampionResponse.Champion champion = champions.get(getAdapterPosition());
+                ChampionResponse.Champion champion = championList.get(getAdapterPosition());
                 onChampClickListener.addToFavorite(champion);
             } else {
                 String name = championName.getText().toString();
@@ -64,7 +101,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ChampionResponse.Champion currentChampion = champions.get(position);
+        ChampionResponse.Champion currentChampion = championList.get(position);
         Glide.with(holder.championIcon)
                 .load(currentChampion.getImage().getIconUrl())
                 .into(holder.championIcon);
@@ -74,16 +111,17 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return champions.size();
+        return championList.size();
     }
 
     public void setChampionList(ArrayList<ChampionResponse.Champion> championList) {
-        this.champions = championList;
+        this.championList = championList;
+        this.championListFull = new ArrayList<>(championList);
         notifyItemRangeChanged(0, championList.size());
     }
 
     public Boolean hasChampions() {
-        return !champions.isEmpty();
+        return !championList.isEmpty();
     }
 
     public interface OnChampClickListener {
