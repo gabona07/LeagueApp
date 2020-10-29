@@ -1,29 +1,26 @@
 package com.example.leagueapp.presenter;
 
-import com.example.leagueapp.ApiService;
-import com.example.leagueapp.RetrofitProvider;
 import com.example.leagueapp.contract.BaseContract;
 import com.example.leagueapp.contract.ChampionContract;
 import com.example.leagueapp.model.ChampionResponse;
+import com.example.leagueapp.model.DataManager;
 import java.util.ArrayList;
-import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Retrofit;
 
 public class ChampionPresenter implements ChampionContract.ChampionPresenter {
 
     private ChampionContract.ChampionView view;
     private Disposable disposable;
-    private Retrofit retrofit = RetrofitProvider.retrofit;
+    private DataManager dataManager = new DataManager();
 
     @Override
     public void fetchChampions() {
         view.showLoading();
-        Single<ChampionResponse> championResponse = retrofit.create(ApiService.class).getChampions();
-        championResponse.subscribeOn(Schedulers.io())
+        dataManager.getChampions()
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<ChampionResponse>() {
             @Override
@@ -43,7 +40,6 @@ public class ChampionPresenter implements ChampionContract.ChampionPresenter {
                 System.out.println(e.toString());
             }
         });
-
     }
 
     @Override
