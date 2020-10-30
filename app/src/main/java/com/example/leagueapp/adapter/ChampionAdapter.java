@@ -114,14 +114,18 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
         return championList.size();
     }
 
-    public void setChampionList(ArrayList<ChampionResponse.Champion> championList) {
+    public void setChampionList(List<ChampionResponse.Champion> championList) {
         this.championList = championList;
         this.championListFull = new ArrayList<>(championList);
         notifyItemRangeChanged(0, championList.size());
     }
 
-    public Boolean hasChampions() {
-        return !championList.isEmpty();
+    public List<ChampionResponse.Champion> getChampions() {
+        return championListFull;
+    }
+
+    public void onDestroy() {
+        this.onChampClickListener = null;
     }
 
     public interface OnChampClickListener {

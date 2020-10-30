@@ -15,14 +15,15 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
 
+import com.example.leagueapp.widget.ChampionSearchView;
 import com.example.leagueapp.R;
 import com.example.leagueapp.adapter.ChampionAdapter;
 import com.example.leagueapp.contract.ChampionContract;
@@ -31,15 +32,17 @@ import com.example.leagueapp.presenter.ChampionPresenter;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class ChampionsFragment extends Fragment implements ChampionContract.ChampionView, ChampionAdapter.OnChampClickListener {
 
     private static final String TAG = "ChampionsFragment";
+    private static final String CHAMPION_LIST_PARCELABLE_KEY = "CHAMPION_LIST_PARCELABLE_KEY";
+    private ChampionContract.ChampionPresenter presenter = new ChampionPresenter();
     private MaterialToolbar toolbar;
     private ProgressBar loadingBar;
-    private ChampionContract.ChampionPresenter presenter = new ChampionPresenter();
-    private ChampionAdapter championAdapter = new ChampionAdapter(this);
+    private ChampionAdapter championAdapter;
 
     public ChampionsFragment() {
         // Required empty public constructor
@@ -63,15 +66,29 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         super.onViewCreated(view, savedInstanceState);
         loadingBar = view.findViewById(R.id.championsLoading);
         RecyclerView championRecyclerView = view.findViewById(R.id.championsRecyclerView);
+        championAdapter = new ChampionAdapter(this);
         championRecyclerView.setAdapter(championAdapter);
         toolbarInit(view);
         // Navigation Component always rebuilds the fragment's view,
         // so this is a workaround to prevent fetching the champions again (we could also use LiveData)
-        if (!championAdapter.hasChampions()) presenter.fetchChampions();
+        if (savedInstanceState != null) {
+            List<ChampionResponse.Champion> championList = savedInstanceState.getParcelableArrayList(CHAMPION_LIST_PARCELABLE_KEY);
+            championAdapter.setChampionList(championList);
+        } else {
+            presenter.fetchChampions();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        List<ChampionResponse.Champion> championList = championAdapter.getChampions();
+        outState.putParcelableArrayList(CHAMPION_LIST_PARCELABLE_KEY, (ArrayList<? extends Parcelable>) championList);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onDestroy() {
+        championAdapter.onDestroy();
         presenter.onDetach();
         super.onDestroy();
     }
@@ -98,7 +115,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
 
     @Override
     public void onChampClick(String championName) {
-        clearSearchView();
+        toolbar.collapseActionView();
         NavDirections action = ChampionsFragmentDirections.actionChampionsFragmentToDetailsFragment(championName);
         NavHostFragment.findNavController(this).navigate(action);
     }
@@ -113,14 +130,12 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         toolbar = view.findViewById(R.id.championsAppBar);
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
-        SearchView searchView = (SearchView) toolbar.getMenu().findItem(R.id.search).getActionView();
-        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        addSearchListener(searchView);
+        searchViewInit();
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.favorite) {
-                    clearSearchView();
+                    toolbar.collapseActionView();
                     NavDirections action = ChampionsFragmentDirections.actionChampionsFragmentToFavoriteFragment();
                     navController.navigate(action);
                     return true;
@@ -130,29 +145,20 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         });
     }
 
-    private void addSearchListener(final SearchView searchView) {
+    private void searchViewInit() {
+        final ChampionSearchView searchView = (ChampionSearchView) toolbar.getMenu().findItem(R.id.search).getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchView.clearFocus();
-                return false;
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (newText != null) {
-                    championAdapter.getFilter().filter(newText);
-                }
+                championAdapter.getFilter().filter(newText);
                 return false;
             }
         });
-    }
-
-    private void clearSearchView() {
-        SearchView searchView = (SearchView) toolbar.getMenu().findItem(R.id.search).getActionView();
-        searchView.clearFocus();
-        searchView.setQuery("", false);
-        searchView.setIconified(true);
-        toolbar.collapseActionView();
     }
 }

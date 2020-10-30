@@ -6,4 +6,6 @@
     <dimen name="card_radius">2dp</dimen>
     <dimen name="card_margin">5dp</dimen>
     <dimen name="champ_icon_size">65dp</dimen>
+    <dimen name="search_plate_radius">6dp</dimen>
+    <dimen name="search_plate_stroke_width">4dp</dimen>
 </resources>
