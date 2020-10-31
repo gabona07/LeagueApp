@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="recycler_view_padding">5dp</dimen>
     <dimen name="text_margin">5dp</dimen>
     <dimen name="image_margin">5dp</dimen>
-    <dimen name="card_radius">10dp</dimen>
+    <dimen name="favorite_button_margin">6dp</dimen>
+    <dimen name="card_radius">2dp</dimen>
     <dimen name="card_margin">5dp</dimen>
-    <dimen name="image_width">60dp</dimen>
-    <dimen name="image_height">60dp</dimen>
+    <dimen name="champ_icon_size">65dp</dimen>
+    <dimen name="search_plate_radius">6dp</dimen>
+    <dimen name="search_plate_stroke_width">4dp</dimen>
     <dimen name="detail_image_width">120dp</dimen>
     <dimen name="detail_image_height">120dp</dimen>
 </resources>
