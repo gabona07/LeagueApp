@@ -37,9 +37,9 @@ import java.util.List;
 
 public class ChampionsFragment extends Fragment implements ChampionContract.ChampionView, ChampionAdapter.OnChampClickListener {
 
-    private static final String TAG = "ChampionsFragment";
+    private static final String LOG_TAG = "ChampionsFragment";
     private static final String CHAMPION_LIST_PARCELABLE_KEY = "CHAMPION_LIST_PARCELABLE_KEY";
-    private ChampionContract.ChampionPresenter presenter = new ChampionPresenter();
+    private ChampionContract.ChampionPresenter championPresenter = new ChampionPresenter();
     private MaterialToolbar toolbar;
     private ProgressBar loadingBar;
     private ChampionAdapter championAdapter;
@@ -51,7 +51,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter.onAttach(this);
+        championPresenter.onAttach(this);
         setHasOptionsMenu(true);
     }
 
@@ -75,7 +75,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
             List<ChampionResponse.Champion> championList = savedInstanceState.getParcelableArrayList(CHAMPION_LIST_PARCELABLE_KEY);
             championAdapter.setChampionList(championList);
         } else {
-            presenter.fetchChampions();
+            championPresenter.fetchChampions();
         }
     }
 
@@ -89,7 +89,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     @Override
     public void onDestroy() {
         championAdapter.onDestroy();
-        presenter.onDetach();
+        championPresenter.onDetach();
         super.onDestroy();
     }
 
@@ -122,7 +122,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
 
     @Override
     public void addToFavorite(ChampionResponse.Champion champion) {
-        Log.d(TAG, "addToFavorite: " + champion.toString());
+        Log.d(LOG_TAG, "addToFavorite: " + champion.toString());
     }
 
     private void toolbarInit(View view) {

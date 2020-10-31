@@ -8,4 +8,6 @@
     <dimen name="champ_icon_size">65dp</dimen>
     <dimen name="search_plate_radius">6dp</dimen>
     <dimen name="search_plate_stroke_width">4dp</dimen>
+    <dimen name="detail_image_width">120dp</dimen>
+    <dimen name="detail_image_height">120dp</dimen>
 </resources>
