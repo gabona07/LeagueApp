@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <item
-        android:id="@+id/favorite"
+        android:id="@+id/action_favorite"
         android:icon="@drawable/ic_favorite_menu_item"
-        android:title="@string/favorite"
+        android:title="@string/favorites"
         app:showAsAction="ifRoom"
-        tools:iconTint="#fff" />
+        tools:iconTint="#CF6679" />
 
 </menu>

@@ -5,18 +5,15 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,18 +25,16 @@ import com.example.leagueapp.adapter.ChampionAdapter;
 import com.example.leagueapp.contract.ChampionContract;
 import com.example.leagueapp.model.ChampionResponse;
 import com.example.leagueapp.presenter.ChampionPresenter;
-import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
 
 
 public class ChampionsFragment extends Fragment implements ChampionContract.ChampionView, ChampionAdapter.OnChampClickListener {
 
-    private static final String LOG_TAG = "ChampionsFragment";
+    private static final String TAG = "ChampionsFragment";
     private ChampionContract.ChampionPresenter championPresenter = new ChampionPresenter();
-    private MaterialToolbar toolbar;
-    private ProgressBar loadingBar;
     private ChampionAdapter championAdapter;
+    private ProgressBar loadingBar;
 
     public ChampionsFragment() {
         // Required empty public constructor
@@ -48,6 +43,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         championAdapter = new ChampionAdapter(this);
         championPresenter.onAttach(this);
     }
@@ -64,12 +60,42 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         loadingBar = view.findViewById(R.id.championsLoading);
         RecyclerView championRecyclerView = view.findViewById(R.id.championsRecyclerView);
         championRecyclerView.setAdapter(championAdapter);
-        toolbarInit(view);
+
         // Navigation Component always rebuilds the fragment's view,
         // so this is a workaround to prevent fetching the champions again (we could also use LiveData)
         if (!championAdapter.holdsChampions()) {
             championPresenter.fetchChampions();
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.champions_menu, menu);
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        final ChampionSearchView searchView = (ChampionSearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                championAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_favorite) {
+            NavDirections action = ChampionsFragmentDirections.actionChampionsFragmentToFavoriteFragment();
+            NavHostFragment.findNavController(this).navigate(action);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -101,50 +127,12 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
 
     @Override
     public void onChampClick(String championName) {
-        toolbar.collapseActionView();
         NavDirections action = ChampionsFragmentDirections.actionChampionsFragmentToDetailsFragment(championName);
         NavHostFragment.findNavController(this).navigate(action);
     }
 
     @Override
     public void addToFavorite(ChampionResponse.Champion champion) {
-        Log.d(LOG_TAG, "addToFavorite: " + champion.toString());
-    }
-
-    private void toolbarInit(View view) {
-        final NavController navController = Navigation.findNavController(view);
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        toolbar = view.findViewById(R.id.championsAppBar);
-        NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
-        searchViewInit();
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.favorite) {
-                    toolbar.collapseActionView();
-                    NavDirections action = ChampionsFragmentDirections.actionChampionsFragmentToFavoriteFragment();
-                    navController.navigate(action);
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
-
-    private void searchViewInit() {
-        final ChampionSearchView searchView = (ChampionSearchView) toolbar.getMenu().findItem(R.id.search).getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                searchView.clearFocus();
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                championAdapter.getFilter().filter(newText);
-                return false;
-            }
-        });
+        Log.d(TAG, "addToFavorite: " + champion.toString());
     }
 }
