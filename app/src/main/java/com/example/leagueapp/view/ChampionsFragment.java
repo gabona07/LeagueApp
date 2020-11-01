@@ -15,7 +15,6 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -32,13 +31,11 @@ import com.example.leagueapp.presenter.ChampionPresenter;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class ChampionsFragment extends Fragment implements ChampionContract.ChampionView, ChampionAdapter.OnChampClickListener {
 
     private static final String LOG_TAG = "ChampionsFragment";
-    private static final String CHAMPION_LIST_PARCELABLE_KEY = "CHAMPION_LIST_PARCELABLE_KEY";
     private ChampionContract.ChampionPresenter championPresenter = new ChampionPresenter();
     private MaterialToolbar toolbar;
     private ProgressBar loadingBar;
@@ -51,6 +48,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        championAdapter = new ChampionAdapter(this);
         championPresenter.onAttach(this);
     }
 
@@ -65,24 +63,13 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         super.onViewCreated(view, savedInstanceState);
         loadingBar = view.findViewById(R.id.championsLoading);
         RecyclerView championRecyclerView = view.findViewById(R.id.championsRecyclerView);
-        championAdapter = new ChampionAdapter(this);
         championRecyclerView.setAdapter(championAdapter);
         toolbarInit(view);
         // Navigation Component always rebuilds the fragment's view,
         // so this is a workaround to prevent fetching the champions again (we could also use LiveData)
-        if (savedInstanceState != null) {
-            List<ChampionResponse.Champion> championList = savedInstanceState.getParcelableArrayList(CHAMPION_LIST_PARCELABLE_KEY);
-            championAdapter.setChampionList(championList);
-        } else {
+        if (!championAdapter.holdsChampions()) {
             championPresenter.fetchChampions();
         }
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        List<ChampionResponse.Champion> championList = championAdapter.getChampions();
-        outState.putParcelableArrayList(CHAMPION_LIST_PARCELABLE_KEY, (ArrayList<? extends Parcelable>) championList);
-        super.onSaveInstanceState(outState);
     }
 
     @Override

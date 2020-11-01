@@ -120,8 +120,8 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
         notifyItemRangeChanged(0, championList.size());
     }
 
-    public List<ChampionResponse.Champion> getChampions() {
-        return championListFull;
+    public boolean holdsChampions() {
+        return !championListFull.isEmpty();
     }
 
     public void onDestroy() {
