@@ -52,7 +52,6 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         championPresenter.onAttach(this);
-        setHasOptionsMenu(true);
     }
 
     @Override
