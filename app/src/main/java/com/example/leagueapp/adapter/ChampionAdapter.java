@@ -1,5 +1,6 @@
 package com.example.leagueapp.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -65,6 +67,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         OnChampClickListener onChampClickListener;
+        final CardView cardView;
         final ImageView championIcon;
         final TextView championName;
         final TextView championTitle;
@@ -73,6 +76,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
         ViewHolder(@NonNull View itemView, OnChampClickListener onChampClickListener) {
             super(itemView);
             this.onChampClickListener = onChampClickListener;
+            cardView = itemView.findViewById(R.id.championCard);
             championIcon = itemView.findViewById(R.id.championIcon);
             championName = itemView.findViewById(R.id.championName);
             championTitle = itemView.findViewById(R.id.championTitle);
@@ -86,8 +90,8 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
                 ChampionResponse.Champion champion = championList.get(getAdapterPosition());
                 onChampClickListener.addToFavorite(champion);
             } else {
-                String name = championName.getText().toString();
-                onChampClickListener.onChampClick(name);
+                String championId = cardView.getTransitionName();
+                onChampClickListener.onChampClick(cardView, championId);
             }
         }
     }
@@ -102,6 +106,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ChampionResponse.Champion currentChampion = championList.get(position);
+        holder.cardView.setTransitionName(currentChampion.getId());
         Glide.with(holder.championIcon)
                 .load(currentChampion.getImage().getIconUrl())
                 .into(holder.championIcon);
@@ -129,7 +134,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
     }
 
     public interface OnChampClickListener {
-        void onChampClick(String championName);
+        void onChampClick(CardView cardView, String championName);
         void addToFavorite(ChampionResponse.Champion champion);
     }
 }

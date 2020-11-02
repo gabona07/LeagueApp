@@ -5,8 +5,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.FragmentNavigator;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ProgressBar;
 
 import com.example.leagueapp.widget.ChampionSearchView;
@@ -25,6 +28,7 @@ import com.example.leagueapp.adapter.ChampionAdapter;
 import com.example.leagueapp.contract.ChampionContract;
 import com.example.leagueapp.model.ChampionResponse;
 import com.example.leagueapp.presenter.ChampionPresenter;
+import com.google.android.material.transition.MaterialElevationScale;
 
 import java.util.ArrayList;
 
@@ -57,6 +61,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        postponeEnterTransition();
         loadingBar = view.findViewById(R.id.championsLoading);
         RecyclerView championRecyclerView = view.findViewById(R.id.championsRecyclerView);
         championRecyclerView.setAdapter(championAdapter);
@@ -66,6 +71,14 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         if (!championAdapter.holdsChampions()) {
             championPresenter.fetchChampions();
         }
+        ViewTreeObserver viewTreeObserver = championRecyclerView.getViewTreeObserver();
+        viewTreeObserver.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                startPostponedEnterTransition();
+                return true;
+            }
+        });
     }
 
     @Override
@@ -126,9 +139,20 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     }
 
     @Override
-    public void onChampClick(String championName) {
-        NavDirections action = ChampionsFragmentDirections.actionChampionsFragmentToDetailsFragment(championName);
-        NavHostFragment.findNavController(this).navigate(action);
+    public void onChampClick(CardView cardView, String championId) {
+        MaterialElevationScale exitTransition = new MaterialElevationScale(false);
+        setExitTransition(exitTransition);
+
+        MaterialElevationScale reenterTransition = new MaterialElevationScale(true);
+        setReenterTransition(reenterTransition);
+
+        String championCardTransitionName = getString(R.string.champion_item_card_transition_name);
+        FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
+                .addSharedElement(cardView, championCardTransitionName)
+                .build();
+
+        NavDirections action = ChampionsFragmentDirections.actionChampionsFragmentToDetailsFragment(championId);
+        NavHostFragment.findNavController(this).navigate(action, extras);
     }
 
     @Override

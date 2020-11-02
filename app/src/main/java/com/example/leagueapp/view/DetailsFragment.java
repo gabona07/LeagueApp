@@ -1,5 +1,6 @@
 package com.example.leagueapp.view;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -7,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.transition.Transition;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +25,8 @@ import com.example.leagueapp.R;
 import com.example.leagueapp.contract.ChampionContract;
 import com.example.leagueapp.model.DetailsResponse;
 import com.example.leagueapp.presenter.DetailsPresenter;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.transition.MaterialContainerTransform;
 
 
 public class DetailsFragment extends Fragment implements ChampionContract.DetailsView {
@@ -41,6 +45,11 @@ public class DetailsFragment extends Fragment implements ChampionContract.Detail
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         presenter.onAttach(this);
+
+        MaterialContainerTransform sharedElementTransition = new MaterialContainerTransform();
+        sharedElementTransition.setScrimColor(Color.TRANSPARENT);
+        sharedElementTransition.setDrawingViewId(R.id.navHostFragment);
+        setSharedElementEnterTransition(sharedElementTransition);
     }
 
     @Override
@@ -55,8 +64,8 @@ public class DetailsFragment extends Fragment implements ChampionContract.Detail
         if (getArguments() != null) {
             profileImage = view.findViewById(R.id.profileImage);
             championName = view.findViewById(R.id.championName);
-            String championName = DetailsFragmentArgs.fromBundle(getArguments()).getChampionName();
-            presenter.fetchChampionDetails(championName);
+            String championId = DetailsFragmentArgs.fromBundle(getArguments()).getChampionName();
+            presenter.fetchChampionDetails(championId);
         }
     }
 
@@ -83,7 +92,6 @@ public class DetailsFragment extends Fragment implements ChampionContract.Detail
 
     @Override
     public void displayChampionDetails(DetailsResponse.Detail champion) {
-        Log.d(TAG, "displayChampionDetails: " + champion.getImage().getFull());
         Glide.with(profileImage).load(champion.getImage().getIconUrl()).into(profileImage);
         championName.setText(champion.getName());
     }
