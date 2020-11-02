@@ -139,7 +139,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     }
 
     @Override
-    public void onChampClick(CardView cardView, String championId) {
+    public void onChampClick(CardView cardView, String championId, String championName) {
         MaterialElevationScale exitTransition = new MaterialElevationScale(false);
         setExitTransition(exitTransition);
 
@@ -151,7 +151,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
                 .addSharedElement(cardView, championCardTransitionName)
                 .build();
 
-        NavDirections action = ChampionsFragmentDirections.actionChampionsFragmentToDetailsFragment(championId);
+        NavDirections action = ChampionsFragmentDirections.actionChampionsFragmentToDetailsFragment(championId, championName);
         NavHostFragment.findNavController(this).navigate(action, extras);
     }
 

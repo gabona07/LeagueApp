@@ -8,9 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.transition.Transition;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,7 +23,6 @@ import com.example.leagueapp.R;
 import com.example.leagueapp.contract.ChampionContract;
 import com.example.leagueapp.model.DetailsResponse;
 import com.example.leagueapp.presenter.DetailsPresenter;
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.transition.MaterialContainerTransform;
 
 
@@ -64,7 +61,7 @@ public class DetailsFragment extends Fragment implements ChampionContract.Detail
         if (getArguments() != null) {
             profileImage = view.findViewById(R.id.profileImage);
             championName = view.findViewById(R.id.championName);
-            String championId = DetailsFragmentArgs.fromBundle(getArguments()).getChampionName();
+            String championId = DetailsFragmentArgs.fromBundle(getArguments()).getChampionId();
             presenter.fetchChampionDetails(championId);
         }
     }

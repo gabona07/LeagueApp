@@ -23,11 +23,14 @@
         android:label="{championName}"
         tools:layout="@layout/fragment_details" >
         <argument
-            android:name="championName"
+            android:name="championId"
             app:argType="string" />
         <action
             android:id="@+id/action_detailsFragment_to_favoriteFragment"
             app:destination="@id/favoriteFragment" />
+        <argument
+            android:name="championName"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/favoriteFragment"

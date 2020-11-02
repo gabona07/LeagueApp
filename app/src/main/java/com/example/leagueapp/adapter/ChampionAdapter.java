@@ -91,7 +91,8 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
                 onChampClickListener.addToFavorite(champion);
             } else {
                 String championId = cardView.getTransitionName();
-                onChampClickListener.onChampClick(cardView, championId);
+                String championName = this.championName.getText().toString();
+                onChampClickListener.onChampClick(cardView, championId, championName);
             }
         }
     }
@@ -134,7 +135,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
     }
 
     public interface OnChampClickListener {
-        void onChampClick(CardView cardView, String championName);
+        void onChampClick(CardView cardView, String championId, String championName);
         void addToFavorite(ChampionResponse.Champion champion);
     }
 }
