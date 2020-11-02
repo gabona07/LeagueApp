@@ -3,4 +3,5 @@
     <string name="champions">Champions</string>
     <string name="favorites">Favorites</string>
     <string name="search">Search</string>
+    <string name="champion_item_card_transition_name">champion_item_card_transition_container</string>
 </resources>

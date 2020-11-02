@@ -9,9 +9,9 @@ import retrofit2.http.Path;
 
 public interface ApiService {
 
-    @GET("champion.json")
+    @GET("/cdn/10.21.1/data/en_US/champion.json")
     Single<ChampionResponse> getChampions();
 
-    @GET("champion/{championName}.json" )
-    Single<DetailsResponse> getChampionDetails(@Path("championName")String championName);
+    @GET("/cdn/10.21.1/data/en_US/champion/{championId}.json" )
+    Single<DetailsResponse> getChampionDetails(@Path("championId")String championName);
 }

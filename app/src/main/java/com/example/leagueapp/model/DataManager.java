@@ -12,5 +12,5 @@ public class DataManager {
         return apiService.getChampions();
     }
 
-    public Single<DetailsResponse> getChampionDetails(String championName) {return apiService.getChampionDetails(championName);}
+    public Single<DetailsResponse> getChampionDetails(String championId) {return apiService.getChampionDetails(championId);}
 }

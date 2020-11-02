@@ -16,9 +16,9 @@ public class DetailsPresenter implements ChampionContract.DetailsPresenter {
     private Disposable disposable;
     private DataManager dataManager = new DataManager();
 
-    public void fetchChampionDetails(final String championName) {
+    public void fetchChampionDetails(final String championId) {
         view.showLoading();
-        dataManager.getChampionDetails(championName)
+        dataManager.getChampionDetails(championId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<DetailsResponse>() {
@@ -30,7 +30,7 @@ public class DetailsPresenter implements ChampionContract.DetailsPresenter {
                     @Override
                     public void onSuccess(DetailsResponse detailsResponse) {
                         view.hideLoading();
-                        DetailsResponse.Detail championDetails = detailsResponse.data.get(championName);
+                        DetailsResponse.Detail championDetails = detailsResponse.data.get(championId);
                         view.displayChampionDetails(championDetails);
                     }
 

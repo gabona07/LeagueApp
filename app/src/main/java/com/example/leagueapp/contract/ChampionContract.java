@@ -20,6 +20,6 @@ public interface ChampionContract {
     }
 
     interface DetailsPresenter extends BaseContract.BasePresenter {
-        void fetchChampionDetails(String championName);
+        void fetchChampionDetails(String championId);
     }
 }
