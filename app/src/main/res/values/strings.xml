@@ -4,4 +4,10 @@
     <string name="favorites">Favorites</string>
     <string name="search">Search</string>
     <string name="champion_item_card_transition_name">champion_item_card_transition_container</string>
+    <string name="attack_label">Attack</string>
+    <string name="defense_label">Defense</string>
+    <string name="magic_label">Magic</string>
+    <string name="difficulty_label">Difficulty</string>
+    <string name="lore_label">Lore</string>
+    <string name="abilities_label">Abilities</string>
 </resources>
