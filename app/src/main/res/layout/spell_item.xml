@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spell_card_margin"
+    android:backgroundTint="?attr/background">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/spellIcon"
+            android:layout_width="@dimen/spell_icon_size"
+            android:layout_height="@dimen/spell_icon_size"
+            android:layout_margin="@dimen/spell_icon_margin"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/spellName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spell_name_padding"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorOnSurface"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/spellIcon"
+            app:layout_constraintLeft_toRightOf="@id/spellIcon"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/spellIcon"
+            tools:text="The Darkin Blade" />
+
+        <TextView
+            android:id="@+id/spellDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spell_description_padding"
+            android:textColor="@color/colorOnSurface"
+            app:layout_constraintTop_toBottomOf="@+id/spellIcon"
+            tools:text="Aatrox slams his greatsword down, dealing physical damage. He can swing three times, each with a different area of effect." />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.cardview.widget.CardView>
