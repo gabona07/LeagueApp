@@ -1,6 +1,5 @@
 package com.example.leagueapp.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,7 +77,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
             this.onChampClickListener = onChampClickListener;
             cardView = itemView.findViewById(R.id.championCard);
             championIcon = itemView.findViewById(R.id.championIcon);
-            championName = itemView.findViewById(R.id.championName);
+            championName = itemView.findViewById(R.id.detailedChampionName);
             championTitle = itemView.findViewById(R.id.championTitle);
             itemView.setOnClickListener(this);
             itemView.findViewById(R.id.favoriteButton).setOnClickListener(this);
@@ -90,9 +89,9 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
                 ChampionResponse.Champion champion = championList.get(getAdapterPosition());
                 onChampClickListener.addToFavorite(champion);
             } else {
-                String championId = cardView.getTransitionName();
-                String championName = this.championName.getText().toString();
-                onChampClickListener.onChampClick(cardView, championId, championName);
+                ChampionResponse.Champion champion = championList.get(getAdapterPosition());
+                String championName = champion.getName();
+                onChampClickListener.onChampClick(cardView, champion, championName);
             }
         }
     }
@@ -123,7 +122,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
     public void setChampionList(List<ChampionResponse.Champion> championList) {
         this.championList = championList;
         this.championListFull = new ArrayList<>(championList);
-        notifyItemRangeChanged(0, championList.size());
+        notifyItemRangeChanged(0, getItemCount());
     }
 
     public boolean holdsChampions() {
@@ -135,7 +134,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
     }
 
     public interface OnChampClickListener {
-        void onChampClick(CardView cardView, String championId, String championName);
+        void onChampClick(CardView cardView, ChampionResponse.Champion champion, String championName);
         void addToFavorite(ChampionResponse.Champion champion);
     }
 }

@@ -1,11 +1,13 @@
 package com.example.leagueapp.view;
 
+import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -15,23 +17,29 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
 import com.example.leagueapp.R;
+import com.example.leagueapp.adapter.SpellsAdapter;
 import com.example.leagueapp.contract.ChampionContract;
+import com.example.leagueapp.databinding.FragmentDetailsBinding;
+import com.example.leagueapp.model.ChampionResponse;
 import com.example.leagueapp.model.DetailsResponse;
 import com.example.leagueapp.presenter.DetailsPresenter;
 import com.google.android.material.transition.MaterialContainerTransform;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 
 public class DetailsFragment extends Fragment implements ChampionContract.DetailsView {
 
     private static final String TAG = "DetailsFragment";
-    private ImageView profileImage;
-    private TextView championName;
+    private FragmentDetailsBinding binding;
     private ChampionContract.DetailsPresenter presenter = new DetailsPresenter();
+    private SpellsAdapter spellsAdapter = new SpellsAdapter();
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -44,26 +52,34 @@ public class DetailsFragment extends Fragment implements ChampionContract.Detail
         presenter.onAttach(this);
 
         MaterialContainerTransform sharedElementTransition = new MaterialContainerTransform();
+        long duration = getResources().getInteger(R.integer.reply_motion_duration);
+        sharedElementTransition.setDuration(duration);
         sharedElementTransition.setScrimColor(Color.TRANSPARENT);
         sharedElementTransition.setDrawingViewId(R.id.navHostFragment);
         setSharedElementEnterTransition(sharedElementTransition);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_details, container, false);
+        binding = FragmentDetailsBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (getArguments() != null) {
-            profileImage = view.findViewById(R.id.profileImage);
-            championName = view.findViewById(R.id.championName);
-            String championId = DetailsFragmentArgs.fromBundle(getArguments()).getChampionId();
-            presenter.fetchChampionDetails(championId);
+            ChampionResponse.Champion champion = DetailsFragmentArgs.fromBundle(getArguments()).getChampion();
+            displayChampionBaseInfo(champion);
+            presenter.fetchChampionDetails(champion.getId());
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
     @Override
@@ -88,19 +104,51 @@ public class DetailsFragment extends Fragment implements ChampionContract.Detail
     }
 
     @Override
-    public void displayChampionDetails(DetailsResponse.Detail champion) {
-        Glide.with(profileImage).load(champion.getImage().getIconUrl()).into(profileImage);
-        championName.setText(champion.getName());
+    public void displayChampionDetails(DetailsResponse.Detail championDetails) {
+        DetailsResponse.Detail.Info championInfo = championDetails.getInfo();
+        binding.championLore.setText(championDetails.getLore());
+        List<DetailsResponse.Detail.Spell> spells = championDetails.getSpells();
+        spellsAdapter.setSpells(spells);
+        binding.spellsRecyclerView.setAdapter(spellsAdapter);
+        binding.spellsRecyclerView.setHasFixedSize(true);
+        binding.championDetailsContainer.setVisibility(View.VISIBLE);
+        animateProgress(binding.attackBar, championInfo.getAttack());
+        animateProgress(binding.defenseBar, championInfo.getDefense());
+        animateProgress(binding.magicBar, championInfo.getMagic());
+        animateProgress(binding.difficultyBar, championInfo.getDifficulty());
     }
 
     @Override
-    public void showLoading() { }
+    public void showLoading() {
+        binding.detailsLoading.setVisibility(View.VISIBLE);
+    }
 
     @Override
-    public void hideLoading() { }
+    public void hideLoading() {
+        binding.detailsLoading.setVisibility(View.GONE);
+    }
 
     @Override
     public void onError(Exception exception) {
 
+    }
+
+    private void displayChampionBaseInfo(ChampionResponse.Champion champion) {
+        ChampionResponse.Champion.Image championImage = champion.getImage();
+        Glide.with(binding.detailedChampionIcon).load(championImage.getIconUrl()).into(binding.detailedChampionIcon);
+        binding.detailedChampionName.setText(champion.getName());
+        binding.detailedChampionTitle.setText(champion.getTitle());
+        binding.championTags.setText(champion.getTags());
+
+    }
+
+    private void animateProgress(ProgressBar progressBar, int progress) {
+        long duration = getResources().getInteger(R.integer.progress_motion_duration);
+        long delay = getResources().getInteger(R.integer.progress_motion_delay);
+        ObjectAnimator defenseBarAnimation = ObjectAnimator.ofInt(progressBar, "progress", progress);
+        defenseBarAnimation.setInterpolator(new FastOutSlowInInterpolator());
+        defenseBarAnimation.setStartDelay(delay);
+        defenseBarAnimation.setDuration(duration);
+        defenseBarAnimation.start();
     }
 }
