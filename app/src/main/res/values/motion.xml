@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="reply_motion_duration">250</integer>
+    <integer name="progress_motion_duration">500</integer>
+    <integer name="progress_motion_delay">350</integer>
+
+</resources>
