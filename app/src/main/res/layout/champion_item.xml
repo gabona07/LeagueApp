@@ -5,9 +5,9 @@
     android:id="@+id/championCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/card_margin"
+    android:layout_margin="@dimen/champion_card_margin"
     android:backgroundTint="?attr/colorSurface"
-    app:cardCornerRadius="@dimen/card_radius">
+    app:cardCornerRadius="@dimen/champion_card_radius">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -23,10 +23,10 @@
             tools:src="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/championName"
+            android:id="@+id/detailedChampionName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/text_margin"
+            android:layout_marginStart="@dimen/champion_card_text_margin"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="?attr/colorOnSurface"
             android:textStyle="bold"
@@ -40,13 +40,13 @@
             android:id="@+id/championTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/text_margin"
+            android:layout_marginStart="@dimen/champion_card_text_margin"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="?attr/colorOnSurface"
             android:textStyle="italic"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/championIcon"
-            app:layout_constraintTop_toBottomOf="@id/championName"
+            app:layout_constraintTop_toBottomOf="@id/detailedChampionName"
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="the Darkin Blade" />
 
