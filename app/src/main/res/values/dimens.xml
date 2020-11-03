@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="recycler_view_padding">5dp</dimen>
-    <dimen name="text_margin">5dp</dimen>
-    <dimen name="image_margin">5dp</dimen>
+    <dimen name="champions_recycler_view_padding">5dp</dimen>
+    <dimen name="champion_card_text_margin">5dp</dimen>
     <dimen name="favorite_button_margin">6dp</dimen>
-    <dimen name="card_radius">2dp</dimen>
-    <dimen name="card_margin">5dp</dimen>
+    <dimen name="champion_card_radius">2dp</dimen>
+    <dimen name="champion_card_margin">5dp</dimen>
     <dimen name="champ_icon_size">65dp</dimen>
     <dimen name="search_plate_radius">6dp</dimen>
     <dimen name="search_plate_stroke_width">4dp</dimen>
-    <dimen name="detail_image_width">120dp</dimen>
-    <dimen name="detail_image_height">120dp</dimen>
+    <dimen name="detail_champ_icon_size">80dp</dimen>
+    <dimen name="details_card_margin">10dp</dimen>
+    <dimen name="info_container_padding">10dp</dimen>
+    <dimen name="champion_base_info_margin">20dp</dimen>
+    <dimen name="champion_tags_text_size">16sp</dimen>
+    <dimen name="attack_label_margin">20dp</dimen>
+    <dimen name="details_container_padding_top">20dp</dimen>
+    <dimen name="details_container_padding_bottom">12dp</dimen>
+    <dimen name="quote_img_size">18dp</dimen>
+    <dimen name="champion_lore_margin">9dp</dimen>
+    <dimen name="lore_text_size">16sp</dimen>
+    <dimen name="abilities_label_margin">20dp</dimen>
+    <dimen name="spells_recycler_view_margin">20dp</dimen>
+    <dimen name="spell_card_margin">8dp</dimen>
+    <dimen name="spell_icon_size">48dp</dimen>
+    <dimen name="spell_icon_margin">10dp</dimen>
+    <dimen name="spell_name_padding">10dp</dimen>
+    <dimen name="spell_description_padding">10dp</dimen>
 </resources>
