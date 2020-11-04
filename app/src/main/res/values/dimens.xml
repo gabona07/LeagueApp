@@ -17,13 +17,16 @@
     <dimen name="details_container_padding_top">20dp</dimen>
     <dimen name="details_container_padding_bottom">12dp</dimen>
     <dimen name="quote_img_size">18dp</dimen>
-    <dimen name="champion_lore_margin">9dp</dimen>
+    <dimen name="champion_lore_margin">6dp</dimen>
     <dimen name="lore_text_size">16sp</dimen>
     <dimen name="abilities_label_margin">20dp</dimen>
-    <dimen name="spells_recycler_view_margin">20dp</dimen>
+    <dimen name="spells_recycler_view_margin">12dp</dimen>
     <dimen name="spell_card_margin">8dp</dimen>
     <dimen name="spell_icon_size">48dp</dimen>
     <dimen name="spell_icon_margin">10dp</dimen>
     <dimen name="spell_name_padding">10dp</dimen>
     <dimen name="spell_description_padding">10dp</dimen>
+    <dimen name="lore_container_margin">12dp</dimen>
+    <dimen name="lore_container_padding_width">10dp</dimen>
+    <dimen name="lore_container_padding_height">16dp</dimen>
 </resources>
