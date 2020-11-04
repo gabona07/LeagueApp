@@ -7,8 +7,8 @@
     <color name="colorAccent">#FAFAFA</color>
     <color name="colorSurface">#1C2F3C</color>
     <color name="colorOnSurface">#FAFAFA</color>
-    <color name="colorAttackBarTint">#B22727</color>
-    <color name="colorDefenseBarTint">#E5CF32</color>
-    <color name="colorMagicBarTint">#2C76CC</color>
-    <color name="colorDifficultyBarTint">#287F1C</color>
+    <color name="colorAttackBarTint">#BA4545</color>
+    <color name="colorDefenseBarTint">#C4C43B</color>
+    <color name="colorMagicBarTint">#4574BA</color>
+    <color name="colorDifficultyBarTint">#50AF50</color>
 </resources>
