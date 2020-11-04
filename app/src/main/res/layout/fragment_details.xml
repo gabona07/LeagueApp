@@ -91,6 +91,7 @@
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:progressTint="@color/colorAttackBarTint"
                     android:max="1000"
                     app:layout_constraintTop_toBottomOf="@+id/attackLabel"
                     tools:progress="800" />
@@ -110,6 +111,7 @@
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:progressTint="@color/colorDefenseBarTint"
                     android:max="1000"
                     app:layout_constraintTop_toBottomOf="@+id/defenseLabel"
                     tools:progress="400" />
@@ -130,6 +132,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:max="1000"
+                    android:progressTint="@color/colorMagicBarTint"
                     app:layout_constraintTop_toBottomOf="@+id/magicLabel"
                     tools:progress="300" />
 
@@ -148,6 +151,7 @@
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:progressTint="@color/colorDifficultyBarTint"
                     android:max="1000"
                     app:layout_constraintTop_toBottomOf="@+id/difficultyLabel"
                     tools:progress="400" />
