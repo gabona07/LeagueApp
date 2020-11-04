@@ -6,6 +6,7 @@
     <color name="colorSecondary">#CF6679</color>
     <color name="colorAccent">#FAFAFA</color>
     <color name="colorSurface">#1C2F3C</color>
+    <color name="colorOnPrimarySurface">#182833</color>
     <color name="colorOnSurface">#FAFAFA</color>
     <color name="colorAttackBarTint">#BA4545</color>
     <color name="colorDefenseBarTint">#C4C43B</color>
