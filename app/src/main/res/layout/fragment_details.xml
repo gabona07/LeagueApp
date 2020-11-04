@@ -14,6 +14,7 @@
         android:layout_margin="@dimen/details_card_margin"
         android:backgroundTint="?attr/colorSurface"
         android:transitionName="@string/champion_item_card_transition_name"
+        app:cardCornerRadius="@dimen/champion_card_radius"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -195,7 +196,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/lore_container_margin"
-                    android:backgroundTint="?attr/background"
+                    android:backgroundTint="?attr/colorOnPrimarySurface"
+                    app:cardElevation="@dimen/lore_card_elevation"
                     app:layout_constraintTop_toBottomOf="@+id/loreLabel">
 
                     <androidx.constraintlayout.widget.ConstraintLayout

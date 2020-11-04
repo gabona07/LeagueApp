@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/spell_card_margin"
-    android:backgroundTint="?attr/background">
+    android:backgroundTint="?attr/colorOnPrimarySurface">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
