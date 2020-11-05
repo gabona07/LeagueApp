@@ -1,47 +1,280 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/background"
+    android:fillViewport="true"
     tools:context=".view.DetailsFragment">
 
     <androidx.cardview.widget.CardView
-        android:layout_margin="10dp"
-        android:transitionName="@string/champion_item_card_transition_name"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="?attr/colorSurface">
+        android:layout_margin="@dimen/details_card_margin"
+        android:backgroundTint="?attr/colorSurface"
+        android:transitionName="@string/champion_item_card_transition_name"
+        app:cardCornerRadius="@dimen/champion_card_radius"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:padding="10dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:paddingStart="@dimen/info_container_padding"
+            android:paddingTop="@dimen/info_container_padding"
+            android:paddingEnd="@dimen/info_container_padding">
 
-        <ImageView
-            android:id="@+id/profileImage"
-            android:layout_width="@dimen/detail_image_width"
-            android:layout_height="@dimen/detail_image_height"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            tools:src="@tools:sample/avatars" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/championBaseInfoContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/championName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:layout_marginStart="20dp"
-            android:textColor="?attr/colorOnSurface"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="@+id/profileImage"
-            app:layout_constraintLeft_toRightOf="@+id/profileImage"
-            tools:text="Aatrox" />
+                <ImageView
+                    android:id="@+id/detailedChampionIcon"
+                    android:layout_width="@dimen/detail_champ_icon_size"
+                    android:layout_height="@dimen/detail_champ_icon_size"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@tools:sample/avatars" />
+
+                <TextView
+                    android:id="@+id/detailedChampionName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/champion_base_info_margin"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@+id/detailedChampionIcon"
+                    app:layout_constraintTop_toTopOf="@+id/detailedChampionIcon"
+                    tools:text="Aatrox" />
+
+                <TextView
+                    android:id="@+id/detailedChampionTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/champion_base_info_margin"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textStyle="italic"
+                    app:layout_constraintBottom_toTopOf="@+id/championTags"
+                    app:layout_constraintLeft_toRightOf="@+id/detailedChampionIcon"
+                    app:layout_constraintTop_toBottomOf="@+id/detailedChampionName"
+                    tools:text="the Darkin Blade" />
+
+                <TextView
+                    android:id="@+id/championTags"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/champion_base_info_margin"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="@dimen/champion_tags_text_size"
+                    app:layout_constraintBottom_toBottomOf="@+id/detailedChampionIcon"
+                    app:layout_constraintLeft_toRightOf="@+id/detailedChampionIcon"
+                    app:layout_constraintTop_toBottomOf="@id/detailedChampionTitle"
+                    tools:text="Fighter, Tank" />
+
+                <TextView
+                    android:id="@+id/attackLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/attack_label_margin"
+                    android:text="@string/attack_label"
+                    android:textColor="@color/colorOnSurface"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/detailedChampionIcon" />
+
+                <ProgressBar
+                    android:id="@+id/attackBar"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="1000"
+                    android:progressTint="@color/colorAttackBarTint"
+                    app:layout_constraintTop_toBottomOf="@+id/attackLabel"
+                    tools:progress="800" />
+
+                <TextView
+                    android:id="@+id/defenseLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/defense_label"
+                    android:textColor="@color/colorOnSurface"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/attackBar" />
+
+                <ProgressBar
+                    android:id="@+id/defenseBar"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="1000"
+                    android:progressTint="@color/colorDefenseBarTint"
+                    app:layout_constraintTop_toBottomOf="@+id/defenseLabel"
+                    tools:progress="400" />
+
+                <TextView
+                    android:id="@+id/magicLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/magic_label"
+                    android:textColor="@color/colorOnSurface"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/defenseBar" />
+
+                <ProgressBar
+                    android:id="@+id/magicBar"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="1000"
+                    android:progressTint="@color/colorMagicBarTint"
+                    app:layout_constraintTop_toBottomOf="@+id/magicLabel"
+                    tools:progress="300" />
+
+                <TextView
+                    android:id="@+id/difficultyLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/difficulty_label"
+                    android:textColor="@color/colorOnSurface"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/magicBar" />
+
+                <ProgressBar
+                    android:id="@+id/difficultyBar"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="1000"
+                    android:progressTint="@color/colorDifficultyBarTint"
+                    app:layout_constraintTop_toBottomOf="@+id/difficultyLabel"
+                    tools:progress="400" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ProgressBar
+                android:id="@+id/detailsLoading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/championBaseInfoContainer" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/championDetailsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/details_container_padding_top"
+                android:paddingBottom="@dimen/details_container_padding_bottom"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/championBaseInfoContainer"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/loreLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lore_label"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    android:textColor="@color/colorOnSurface"
+                    android:textStyle="italic"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/championLoreContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/lore_container_margin"
+                    android:backgroundTint="?attr/colorOnPrimarySurface"
+                    app:cardElevation="@dimen/lore_card_elevation"
+                    app:layout_constraintTop_toBottomOf="@+id/loreLabel">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingStart="@dimen/lore_container_padding_width"
+                        android:paddingTop="@dimen/lore_container_padding_height"
+                        android:paddingEnd="@dimen/lore_container_padding_width"
+                        android:paddingBottom="@dimen/lore_container_padding_height">
+
+                        <ImageView
+                            android:id="@+id/quoteStart"
+                            android:layout_width="@dimen/quote_img_size"
+                            android:layout_height="@dimen/quote_img_size"
+                            android:src="@drawable/ic_quote_start"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:id="@+id/championLore"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/champion_lore_margin"
+                            android:layout_marginEnd="@dimen/champion_lore_margin"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                            android:textColor="@color/colorOnSurface"
+                            android:textSize="@dimen/lore_text_size"
+                            android:textStyle="italic"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toRightOf="@+id/quoteStart"
+                            app:layout_constraintRight_toLeftOf="@+id/quoteEnd"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="Once honored defenders of Shurima against the Void, Aatrox and his brethren would eventually become an even greater threat to Runeterra, and were defeated only by cunning mortal sorcery. But after centuries of imprisonment, Aatrox was the first to find freedom once more, corrupting and transforming those foolish enough to try and wield the magical weapon that contained his essence. Now, with stolen flesh, he walks Runeterra in a brutal approximation of his previous form, seeking an apocalyptic and long overdue vengeance." />
+
+                        <ImageView
+                            android:id="@+id/quoteEnd"
+                            android:layout_width="@dimen/quote_img_size"
+                            android:layout_height="@dimen/quote_img_size"
+                            android:src="@drawable/ic_quote_end"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            tools:ignore="ContentDescription" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/AbilitiesLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/abilities_label_margin"
+                    android:text="@string/abilities_label"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    android:textColor="@color/colorOnSurface"
+                    android:textStyle="italic"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/championLoreContainer" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/spellsRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spells_recycler_view_margin"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@id/AbilitiesLabel"
+                    tools:itemCount="4"
+                    tools:listitem="@layout/spell_item" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

@@ -62,6 +62,13 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         postponeEnterTransition();
+        view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                startPostponedEnterTransition();
+                return true;
+            }
+        });
         loadingBar = view.findViewById(R.id.championsLoading);
         RecyclerView championRecyclerView = view.findViewById(R.id.championsRecyclerView);
         championRecyclerView.setAdapter(championAdapter);
@@ -71,14 +78,6 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         if (!championAdapter.holdsChampions()) {
             championPresenter.fetchChampions();
         }
-        ViewTreeObserver viewTreeObserver = championRecyclerView.getViewTreeObserver();
-        viewTreeObserver.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                startPostponedEnterTransition();
-                return true;
-            }
-        });
     }
 
     @Override
@@ -139,11 +138,14 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     }
 
     @Override
-    public void onChampClick(CardView cardView, String championId) {
+    public void onChampClick(CardView cardView, ChampionResponse.Champion champion, String championName) {
+        long duration = getResources().getInteger(R.integer.reply_motion_duration);
         MaterialElevationScale exitTransition = new MaterialElevationScale(false);
+        exitTransition.setDuration(duration);
         setExitTransition(exitTransition);
 
         MaterialElevationScale reenterTransition = new MaterialElevationScale(true);
+        reenterTransition.setDuration(duration);
         setReenterTransition(reenterTransition);
 
         String championCardTransitionName = getString(R.string.champion_item_card_transition_name);
@@ -151,7 +153,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
                 .addSharedElement(cardView, championCardTransitionName)
                 .build();
 
-        NavDirections action = ChampionsFragmentDirections.actionChampionsFragmentToDetailsFragment(championId);
+        NavDirections action = ChampionsFragmentDirections.actionChampionsFragmentToDetailsFragment(championName, champion);
         NavHostFragment.findNavController(this).navigate(action, extras);
     }
 

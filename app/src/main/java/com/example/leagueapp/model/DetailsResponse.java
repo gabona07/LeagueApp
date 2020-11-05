@@ -1,5 +1,6 @@
 package com.example.leagueapp.model;
 
+import java.util.List;
 import java.util.Map;
 
 public class DetailsResponse {
@@ -7,88 +8,94 @@ public class DetailsResponse {
 
 
     public class Detail {
-        String id;
-        String name;
-        String title;
-        String blurb;
-        ChampionResponse.Champion.Image image;
+        String lore;
+        Info info;
+        List<Spell> spells;
 
-        public Detail(String id, String name, String title, String blurb, ChampionResponse.Champion.Image image) {
-            this.id = id;
-            this.name = name;
-            this.title = title;
-            this.blurb = blurb;
-            this.image = image;
+        public Detail(String lore, Info info, List<Spell> spells) {
+            this.lore = lore;
+            this.info = info;
+            this.spells = spells;
         }
 
-        @Override
-        public String toString() {
-            return "Champion{" +
-                    "id='" + id + '\'' +
-                    ", name='" + name + '\'' +
-                    ", title='" + title + '\'' +
-                    ", blurb='" + blurb + '\'' +
-                    '}';
+        public String getLore() {
+            return lore;
         }
 
-        public class Image {
-            String full;
+        public Info getInfo() {
+            return info;
+        }
 
-            public Image(String full) {
-                this.full = full;
+        public List<Spell> getSpells() {
+            return spells;
+        }
+
+        public class Info {
+            int attack;
+            int defense;
+            int magic;
+            int difficulty;
+
+            protected Info(int attack, int defense, int magic, int difficulty) {
+                this.attack = attack;
+                this.defense = defense;
+                this.magic = magic;
+                this.difficulty = difficulty;
             }
 
-            public String getFull() {
-                return full;
+            public int getAttack() {
+                return attack * 100;
             }
 
-            public void setFull(String full) {
-                this.full = full;
+            public int getDefense() {
+                return defense * 100;
             }
 
-            public String getIconUrl() {
-                return "https://ddragon.leagueoflegends.com/cdn/10.21.1/img/champion/" + getFull();
+            public int getMagic() {
+                return magic * 100;
             }
+
+            public int getDifficulty() {
+                return difficulty * 100;
+            }
+
         }
 
-        public String getId() {
-            return id;
-        }
+        public class Spell {
+            String name;
+            String description;
+            Image image;
 
-        public void setId(String id) {
-            this.id = id;
-        }
+            public Spell(String name, String description, Image image) {
+                this.name = name;
+                this.description = description;
+                this.image = image;
+            }
 
-        public String getName() {
-            return name;
-        }
+            public class Image {
+                String full;
 
-        public void setName(String name) {
-            this.name = name;
-        }
+                public Image(String full) {
+                    this.full = full;
+                }
 
-        public String getTitle() {
-            return title;
-        }
+                public String getSpellIcon() {
+                    return "http://ddragon.leagueoflegends.com/cdn/10.22.1/img/spell/" + full;
+                }
 
-        public void setTitle(String title) {
-            this.title = title;
-        }
+            }
 
-        public String getBlurb() {
-            return blurb;
-        }
+            public String getName() {
+                return name;
+            }
 
-        public void setBlurb(String blurb) {
-            this.blurb = blurb;
-        }
+            public String getDescription() {
+                return description;
+            }
 
-        public ChampionResponse.Champion.Image getImage() {
-            return image;
-        }
-
-        public void setImage(ChampionResponse.Champion.Image image) {
-            this.image = image;
+            public Image getImage() {
+                return image;
+            }
         }
     }
 }

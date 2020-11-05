@@ -16,7 +16,7 @@ public interface ChampionContract {
     }
 
     interface DetailsView extends BaseContract.BaseView {
-        void displayChampionDetails(DetailsResponse.Detail champion);
+        void displayChampionDetails(DetailsResponse.Detail championDetails);
     }
 
     interface DetailsPresenter extends BaseContract.BasePresenter {
