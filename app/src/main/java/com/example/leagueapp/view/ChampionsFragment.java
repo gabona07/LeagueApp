@@ -62,6 +62,13 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         postponeEnterTransition();
+        view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                startPostponedEnterTransition();
+                return true;
+            }
+        });
         loadingBar = view.findViewById(R.id.championsLoading);
         RecyclerView championRecyclerView = view.findViewById(R.id.championsRecyclerView);
         championRecyclerView.setAdapter(championAdapter);
@@ -71,14 +78,6 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         if (!championAdapter.holdsChampions()) {
             championPresenter.fetchChampions();
         }
-        ViewTreeObserver viewTreeObserver = championRecyclerView.getViewTreeObserver();
-        viewTreeObserver.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                startPostponedEnterTransition();
-                return true;
-            }
-        });
     }
 
     @Override
