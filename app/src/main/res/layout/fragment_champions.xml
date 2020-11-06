@@ -24,6 +24,7 @@
         android:clipToPadding="false"
         android:paddingTop="@dimen/champions_recycler_view_padding"
         android:paddingBottom="@dimen/champions_recycler_view_padding"
+        android:transitionGroup="true"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="15"
         tools:listitem="@layout/champion_item" />

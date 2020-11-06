@@ -28,10 +28,13 @@ import com.example.leagueapp.contract.ChampionContract;
 import com.example.leagueapp.model.ChampionResponse;
 import com.example.leagueapp.presenter.ChampionPresenter;
 import com.google.android.material.transition.MaterialElevationScale;
+import com.google.android.material.transition.MaterialFadeThrough;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+
+import javax.xml.datatype.Duration;
 
 
 public class ChampionsFragment extends Fragment implements ChampionContract.ChampionView, ChampionAdapter.OnChampClickListener {
@@ -109,6 +112,10 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_favorite) {
+            MaterialFadeThrough exitTransition = new MaterialFadeThrough();
+            long duration = getResources().getInteger(R.integer.reply_motion_duration);
+            exitTransition.setDuration(duration);
+            setExitTransition(exitTransition);
             NavDirections action = ChampionsFragmentDirections.actionChampionsFragmentToFavoriteFragment();
             NavHostFragment.findNavController(this).navigate(action);
             return true;

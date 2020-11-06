@@ -28,6 +28,7 @@ import com.example.leagueapp.model.ChampionResponse;
 import com.example.leagueapp.model.DetailsResponse;
 import com.example.leagueapp.presenter.DetailsPresenter;
 import com.google.android.material.transition.MaterialContainerTransform;
+import com.google.android.material.transition.MaterialFadeThrough;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -90,6 +91,10 @@ public class DetailsFragment extends Fragment implements ChampionContract.Detail
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_favorite) {
+            MaterialFadeThrough exitTransition = new MaterialFadeThrough();
+            long duration = getResources().getInteger(R.integer.reply_motion_duration);
+            exitTransition.setDuration(duration);
+            setExitTransition(exitTransition);
             NavDirections action = DetailsFragmentDirections.actionDetailsFragmentToFavoriteFragment();
             NavHostFragment.findNavController(this).navigate(action);
             return true;
