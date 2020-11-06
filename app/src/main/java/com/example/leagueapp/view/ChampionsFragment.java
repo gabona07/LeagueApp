@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.FragmentNavigator;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,8 +19,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.ProgressBar;
 
+import com.example.leagueapp.databinding.FragmentChampionsBinding;
 import com.example.leagueapp.widget.ChampionSearchView;
 import com.example.leagueapp.R;
 import com.example.leagueapp.adapter.ChampionAdapter;
@@ -29,6 +28,8 @@ import com.example.leagueapp.contract.ChampionContract;
 import com.example.leagueapp.model.ChampionResponse;
 import com.example.leagueapp.presenter.ChampionPresenter;
 import com.google.android.material.transition.MaterialElevationScale;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -38,7 +39,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     private static final String TAG = "ChampionsFragment";
     private ChampionContract.ChampionPresenter championPresenter = new ChampionPresenter();
     private ChampionAdapter championAdapter;
-    private ProgressBar loadingBar;
+    private FragmentChampionsBinding binding;
 
     public ChampionsFragment() {
         // Required empty public constructor
@@ -53,9 +54,16 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_champions, container, false);
+        binding = FragmentChampionsBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
     @Override
@@ -69,9 +77,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
                 return true;
             }
         });
-        loadingBar = view.findViewById(R.id.championsLoading);
-        RecyclerView championRecyclerView = view.findViewById(R.id.championsRecyclerView);
-        championRecyclerView.setAdapter(championAdapter);
+        binding.championsRecyclerView.setAdapter(championAdapter);
 
         // Navigation Component always rebuilds the fragment's view,
         // so this is a workaround to prevent fetching the champions again (we could also use LiveData)
@@ -119,12 +125,12 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
 
     @Override
     public void showLoading() {
-        loadingBar.setVisibility(View.VISIBLE);
+        binding.championsLoading.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
-        loadingBar.setVisibility(View.GONE);
+        binding.championsLoading.setVisibility(View.GONE);
     }
 
     @Override
