@@ -11,7 +11,10 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/details_card_margin"
+        android:layout_marginStart="@dimen/details_card_margin_side"
+        android:layout_marginTop="@dimen/details_card_margin"
+        android:layout_marginEnd="@dimen/details_card_margin_side"
+        android:layout_marginBottom="@dimen/details_card_margin"
         android:backgroundTint="?attr/colorSurface"
         android:transitionName="@string/champion_item_card_transition_name"
         app:cardCornerRadius="@dimen/champion_card_radius"
