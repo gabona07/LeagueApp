@@ -11,6 +11,7 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -135,7 +136,7 @@ public class DetailsFragment extends Fragment implements ChampionContract.Detail
 
     @Override
     public void onError(Exception exception) {
-
+        Log.d(TAG, "onError: " + exception.getMessage());
     }
 
     private void displayChampionBaseInfo(ChampionResponse.Champion champion) {

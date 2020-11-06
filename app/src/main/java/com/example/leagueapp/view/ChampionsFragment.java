@@ -142,7 +142,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
 
     @Override
     public void onError(Exception exception) {
-
+        Log.d(TAG, "onError: " + exception.getMessage());
     }
 
     @Override

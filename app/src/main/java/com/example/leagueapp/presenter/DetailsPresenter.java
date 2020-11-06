@@ -36,7 +36,9 @@ public class DetailsPresenter implements ChampionContract.DetailsPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        System.out.println(e.toString());
+                        Exception exception = new Exception(e);
+                        view.hideLoading();
+                        view.onError(exception);
                     }
                 });
     }
