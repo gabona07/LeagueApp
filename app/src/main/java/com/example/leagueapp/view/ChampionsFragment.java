@@ -32,10 +32,8 @@ import com.google.android.material.transition.MaterialFadeThrough;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
-
-import javax.xml.datatype.Duration;
-
 
 public class ChampionsFragment extends Fragment implements ChampionContract.ChampionView, ChampionAdapter.OnChampClickListener {
 
@@ -87,6 +85,14 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         if (!championAdapter.holdsChampions()) {
             championPresenter.fetchChampions();
         }
+        binding.error.retryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.setVisibility(View.INVISIBLE);
+                binding.error.retryLoading.setVisibility(View.VISIBLE);
+                championPresenter.fetchChampions();
+            }
+        });
     }
 
     @Override
@@ -143,10 +149,24 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     @Override
     public void onError(Exception exception) {
         Log.d(TAG, "onError: " + exception.getMessage());
+        binding.error.errorContainer.setBackgroundColor(getResources().getColor(R.color.colorBackground));
+        if (exception.getCause() instanceof UnknownHostException) {
+            binding.error.errorImage.setImageResource(R.drawable.error_connection);
+            binding.error.errorTitle.setText(R.string.connection_error_title);
+            binding.error.errorMessage.setText(R.string.connection_error_message);
+        } else {
+            binding.error.errorImage.setImageResource(R.drawable.error_generic);
+            binding.error.errorTitle.setText(R.string.generic_error_title);
+            binding.error.errorMessage.setText(R.string.generic_error_message);
+        }
+        binding.error.retryLoading.setVisibility(View.INVISIBLE);
+        binding.error.retryButton.setVisibility(View.VISIBLE);
+        binding.error.errorContainer.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void displayChampions(ArrayList<ChampionResponse.Champion> champions) {
+        binding.error.errorContainer.setVisibility(View.GONE);
         championAdapter.setChampionList(champions);
     }
 
