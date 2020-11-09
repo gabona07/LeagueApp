@@ -15,7 +15,8 @@
         android:id="@+id/action_favorite"
         android:icon="@drawable/ic_favorite_menu_item"
         android:title="@string/favorites"
-        app:showAsAction="ifRoom"
-        tools:iconTint="#CF6679" />
+        app:showAsAction="always"
+        tools:iconTint="#CF6679"
+        tools:ignore="AlwaysShowAction" />
 
 </menu>
