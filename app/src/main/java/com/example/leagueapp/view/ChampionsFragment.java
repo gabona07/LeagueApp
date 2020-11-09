@@ -49,7 +49,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        setRetainInstance(true);
         championAdapter = new ChampionAdapter(this);
         championPresenter.onAttach(this);
     }
@@ -57,6 +57,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         binding = FragmentChampionsBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -83,6 +84,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         // Navigation Component always rebuilds the fragment's view,
         // so this is a workaround to prevent fetching the champions again (we could also use LiveData)
         if (!championAdapter.holdsChampions()) {
+            Log.d(TAG, "onViewCreated: FETCHELEEEEEEK");
             championPresenter.fetchChampions();
         }
         binding.error.retryButton.setOnClickListener(new View.OnClickListener() {
