@@ -38,9 +38,14 @@ import java.util.ArrayList;
 public class ChampionsFragment extends Fragment implements ChampionContract.ChampionView, ChampionAdapter.OnChampClickListener {
 
     private static final String TAG = "ChampionsFragment";
+    private final String SEARCH_QUERY_KEY = "SEARCH_QUERY_KEY";
+    private final String SEARCH_VIEW_FOCUS_KEY = "SEARCH_VIEW_FOCUS_KEY";
     private ChampionContract.ChampionPresenter championPresenter = new ChampionPresenter();
     private ChampionAdapter championAdapter;
     private FragmentChampionsBinding binding;
+    private ChampionSearchView searchView;
+    private String searchQuery;
+    private boolean isSearchViewFocused;
 
     public ChampionsFragment() {
         // Required empty public constructor
@@ -59,6 +64,10 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         binding = FragmentChampionsBinding.inflate(inflater, container, false);
+        if (savedInstanceState != null) {
+            searchQuery = savedInstanceState.getString(SEARCH_QUERY_KEY);
+            isSearchViewFocused = savedInstanceState.getBoolean(SEARCH_VIEW_FOCUS_KEY);
+        }
         return binding.getRoot();
     }
 
@@ -84,7 +93,6 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         // Navigation Component always rebuilds the fragment's view,
         // so this is a workaround to prevent fetching the champions again (we could also use LiveData)
         if (!championAdapter.holdsChampions()) {
-            Log.d(TAG, "onViewCreated: FETCHELEEEEEEK");
             championPresenter.fetchChampions();
         }
         binding.error.retryButton.setOnClickListener(new View.OnClickListener() {
@@ -98,10 +106,19 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (searchView != null) {
+            outState.putString(SEARCH_QUERY_KEY, searchView.getQuery().toString());
+            outState.putBoolean(SEARCH_VIEW_FOCUS_KEY, searchView.hasFocus());
+        }
+    }
+
+    @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.champions_menu, menu);
         final MenuItem searchItem = menu.findItem(R.id.action_search);
-        final ChampionSearchView searchView = (ChampionSearchView) searchItem.getActionView();
+        searchView = (ChampionSearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -115,6 +132,16 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
                 return false;
             }
         });
+        if (searchQuery != null && !searchQuery.isEmpty()
+                || searchQuery != null && isSearchViewFocused) {
+            searchItem.expandActionView();
+            searchView.setQuery(searchQuery, false);
+            if (isSearchViewFocused) {
+                searchView.requestFocus();
+            } else {
+                searchView.clearFocus();
+            }
+        }
     }
 
     @Override
@@ -187,6 +214,10 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
                 .addSharedElement(cardView, championCardTransitionName)
                 .build();
+
+        searchQuery = searchView.getQuery().toString();
+        isSearchViewFocused = false;
+        searchView.clearFocus();
 
         NavDirections action = ChampionsFragmentDirections.actionChampionsFragmentToDetailsFragment(championName, champion);
         NavHostFragment.findNavController(this).navigate(action, extras);
