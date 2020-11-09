@@ -68,6 +68,14 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
             searchQuery = savedInstanceState.getString(SEARCH_QUERY_KEY);
             isSearchViewFocused = savedInstanceState.getBoolean(SEARCH_VIEW_FOCUS_KEY);
         }
+        binding.error.retryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.setVisibility(View.INVISIBLE);
+                binding.error.retryLoading.setVisibility(View.VISIBLE);
+                championPresenter.fetchChampions();
+            }
+        });
         return binding.getRoot();
     }
 
@@ -95,14 +103,6 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         if (!championAdapter.holdsChampions()) {
             championPresenter.fetchChampions();
         }
-        binding.error.retryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.setVisibility(View.INVISIBLE);
-                binding.error.retryLoading.setVisibility(View.VISIBLE);
-                championPresenter.fetchChampions();
-            }
-        });
     }
 
     @Override
