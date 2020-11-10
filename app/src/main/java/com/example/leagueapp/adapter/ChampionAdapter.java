@@ -119,6 +119,11 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
         return championList.size();
     }
 
+    @Override
+    public long getItemId(int position) {
+        return championList.get(position).getKey();
+    }
+
     public void setChampionList(List<ChampionResponse.Champion> championList) {
         this.championList = championList;
         this.championListFull = new ArrayList<>(championList);
