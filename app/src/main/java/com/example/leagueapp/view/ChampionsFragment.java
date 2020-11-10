@@ -56,7 +56,6 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         championAdapter = new ChampionAdapter(this);
-        championAdapter.setHasStableIds(true);
         championPresenter.onAttach(this);
     }
 
@@ -78,12 +77,6 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
             }
         });
         return binding.getRoot();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
     }
 
     @Override
@@ -119,6 +112,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.champions_menu, menu);
         final MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchItem.collapseActionView();
         searchView = (ChampionSearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -158,6 +152,18 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDestroyOptionsMenu() {
+        super.onDestroyOptionsMenu();
+        Log.d(TAG, "onDestroyOptionsMenu: ANYÁÁÁÁÁÁÁÁD");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
     @Override
