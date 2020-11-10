@@ -13,6 +13,7 @@ public class ChampionResponse {
 
     public class Champion implements Parcelable {
         String id;
+        long key;
         String name;
         String title;
         Image image;
@@ -20,6 +21,7 @@ public class ChampionResponse {
 
         protected Champion(Parcel in) {
             id = in.readString();
+            key = in.readLong();
             name = in.readString();
             title = in.readString();
             image = in.readParcelable(Image.class.getClassLoader());
@@ -46,6 +48,7 @@ public class ChampionResponse {
         @Override
         public void writeToParcel(Parcel parcel, int i) {
             parcel.writeString(id);
+            parcel.writeLong(key);
             parcel.writeString(name);
             parcel.writeString(title);
             parcel.writeParcelable(image, i);
@@ -88,6 +91,10 @@ public class ChampionResponse {
 
         public String getId() {
             return id;
+        }
+
+        public long getKey() {
+            return key;
         }
 
         public String getName() {
