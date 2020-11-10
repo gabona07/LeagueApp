@@ -56,6 +56,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         championAdapter = new ChampionAdapter(this);
+        championAdapter.setHasStableIds(true);
         championPresenter.onAttach(this);
     }
 
@@ -129,9 +130,10 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
             @Override
             public boolean onQueryTextChange(String newText) {
                 championAdapter.getFilter().filter(newText);
-                return false;
+                return true;
             }
         });
+
         if (searchQuery != null && !searchQuery.isEmpty()
                 || searchQuery != null && isSearchViewFocused) {
             searchItem.expandActionView();
@@ -218,6 +220,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         searchQuery = searchView.getQuery().toString();
         isSearchViewFocused = false;
         searchView.clearFocus();
+        searchView.setOnQueryTextListener(null);
 
         NavDirections action = ChampionsFragmentDirections.actionChampionsFragmentToDetailsFragment(championName, champion);
         NavHostFragment.findNavController(this).navigate(action, extras);
