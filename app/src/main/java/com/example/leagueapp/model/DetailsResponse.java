@@ -80,7 +80,7 @@ public class DetailsResponse {
                 }
 
                 public String getSpellIcon() {
-                    return "http://ddragon.leagueoflegends.com/cdn/10.22.1/img/spell/" + full;
+                    return "https://ddragon.leagueoflegends.com/cdn/10.22.1/img/spell/" + full;
                 }
 
             }
