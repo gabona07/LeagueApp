@@ -155,15 +155,9 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     }
 
     @Override
-    public void onDestroyOptionsMenu() {
-        super.onDestroyOptionsMenu();
-        Log.d(TAG, "onDestroyOptionsMenu: ANYÁÁÁÁÁÁÁÁD");
-    }
-
-    @Override
     public void onDestroyView() {
-        super.onDestroyView();
         binding = null;
+        super.onDestroyView();
     }
 
     @Override
