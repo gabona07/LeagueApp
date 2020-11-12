@@ -14,7 +14,11 @@ public class ChampionPresenter implements ChampionContract.ChampionPresenter {
 
     private ChampionContract.ChampionView view;
     private Disposable disposable;
-    private DataManager dataManager = new DataManager();
+    private DataManager dataManager;
+
+    public ChampionPresenter(DataManager dataManager) {
+        this.dataManager = dataManager;
+    }
 
     @Override
     public void fetchChampions() {

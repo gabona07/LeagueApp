@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.example.leagueapp.databinding.FragmentChampionsBinding;
+import com.example.leagueapp.model.DataManager;
 import com.example.leagueapp.widget.ChampionSearchView;
 import com.example.leagueapp.R;
 import com.example.leagueapp.adapter.ChampionAdapter;
@@ -40,7 +41,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     private static final String TAG = "ChampionsFragment";
     private final String SEARCH_QUERY_KEY = "SEARCH_QUERY_KEY";
     private final String SEARCH_VIEW_FOCUS_KEY = "SEARCH_VIEW_FOCUS_KEY";
-    private ChampionContract.ChampionPresenter championPresenter = new ChampionPresenter();
+    private ChampionContract.ChampionPresenter championPresenter = new ChampionPresenter(new DataManager());
     private ChampionAdapter championAdapter;
     private FragmentChampionsBinding binding;
     private ChampionSearchView searchView;

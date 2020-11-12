@@ -6,8 +6,11 @@ import java.util.Map;
 public class DetailsResponse {
     public Map<String, DetailsResponse.Detail> data;
 
+    public DetailsResponse(Map<String, Detail> data) {
+        this.data = data;
+    }
 
-    public class Detail {
+    public static class Detail {
         String lore;
         Info info;
         List<Spell> spells;
@@ -30,13 +33,13 @@ public class DetailsResponse {
             return spells;
         }
 
-        public class Info {
+        public static class Info {
             int attack;
             int defense;
             int magic;
             int difficulty;
 
-            protected Info(int attack, int defense, int magic, int difficulty) {
+            public Info(int attack, int defense, int magic, int difficulty) {
                 this.attack = attack;
                 this.defense = defense;
                 this.magic = magic;
@@ -61,7 +64,7 @@ public class DetailsResponse {
 
         }
 
-        public class Spell {
+        public static class Spell {
             String name;
             String description;
             Image image;
@@ -72,7 +75,7 @@ public class DetailsResponse {
                 this.image = image;
             }
 
-            public class Image {
+            public static class Image {
                 String full;
 
                 public Image(String full) {
