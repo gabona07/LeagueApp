@@ -13,6 +13,7 @@ public class ChampionSearchView extends SearchView {
 
     public ChampionSearchView(@NonNull Context context) {
         super(context);
+        setIconifiedByDefault(true);
         setImeOptions(EditorInfo.IME_ACTION_DONE);
         setMaxWidth(Integer.MAX_VALUE);
         View searchPlate = findViewById(androidx.appcompat.R.id.search_plate);

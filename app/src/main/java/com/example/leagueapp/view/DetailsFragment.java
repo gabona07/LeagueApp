@@ -95,6 +95,7 @@ public class DetailsFragment extends Fragment implements ChampionContract.Detail
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        menu.clear();
         inflater.inflate(R.menu.details_menu, menu);
     }
 
