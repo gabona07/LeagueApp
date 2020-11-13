@@ -122,7 +122,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
 
     @Override
     public long getItemId(int position) {
-        return championListFull.get(position).getKey();
+        return championList.get(position).getKey();
     }
 
     public void setChampionList(List<ChampionResponse.Champion> championList) {
