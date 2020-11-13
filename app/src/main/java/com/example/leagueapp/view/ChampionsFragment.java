@@ -109,7 +109,21 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         menu.clear();
         inflater.inflate(R.menu.champions_menu, menu);
         final MenuItem searchItem = menu.findItem(R.id.action_search);
+        final MenuItem favoriteItem = menu.findItem(R.id.action_favorite);
         searchView = (ChampionSearchView) searchItem.getActionView();
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                favoriteItem.setVisible(false);
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                favoriteItem.setVisible(true);
+                return true;
+            }
+        });
         if (searchQuery != null && !searchQuery.isEmpty()) {
             searchItem.expandActionView();
             searchView.clearFocus();
@@ -128,7 +142,6 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
                 return true;
             }
         });
-
         searchView.setQuery(searchQuery, false);
     }
 
