@@ -117,13 +117,13 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchQuery = query;
                 searchView.clearFocus();
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                searchQuery = newText;
                 championAdapter.getFilter().filter(newText);
                 return true;
             }
