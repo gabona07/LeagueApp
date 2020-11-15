@@ -26,6 +26,7 @@ import com.example.leagueapp.adapter.SpellsAdapter;
 import com.example.leagueapp.contract.ChampionContract;
 import com.example.leagueapp.databinding.FragmentDetailsBinding;
 import com.example.leagueapp.model.ChampionResponse;
+import com.example.leagueapp.model.DataManager;
 import com.example.leagueapp.model.DetailsResponse;
 import com.example.leagueapp.presenter.DetailsPresenter;
 import com.google.android.material.transition.MaterialContainerTransform;
@@ -41,7 +42,8 @@ public class DetailsFragment extends Fragment implements ChampionContract.Detail
 
     private static final String TAG = "DetailsFragment";
     private FragmentDetailsBinding binding;
-    private ChampionContract.DetailsPresenter presenter = new DetailsPresenter();
+    private DataManager dataManager = new DataManager();
+    private ChampionContract.DetailsPresenter presenter = new DetailsPresenter(dataManager);
     private SpellsAdapter spellsAdapter = new SpellsAdapter();
 
     public DetailsFragment() {
@@ -88,12 +90,6 @@ public class DetailsFragment extends Fragment implements ChampionContract.Detail
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
-
-    @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.details_menu, menu);
@@ -111,6 +107,12 @@ public class DetailsFragment extends Fragment implements ChampionContract.Detail
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDestroyView() {
+        binding = null;
+        super.onDestroyView();
     }
 
     @Override

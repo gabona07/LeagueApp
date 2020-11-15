@@ -14,7 +14,11 @@ public class DetailsPresenter implements ChampionContract.DetailsPresenter {
 
     private ChampionContract.DetailsView view;
     private Disposable disposable;
-    private DataManager dataManager = new DataManager();
+    private DataManager dataManager;
+
+    public DetailsPresenter(DataManager dataManager) {
+        this.dataManager = dataManager;
+    }
 
     public void fetchChampionDetails(final String championId) {
         view.showLoading();

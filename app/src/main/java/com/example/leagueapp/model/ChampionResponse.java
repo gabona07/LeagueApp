@@ -10,14 +10,26 @@ import java.util.Map;
 public class ChampionResponse {
     public Map<String, Champion> data;
 
+    public ChampionResponse(Map<String, Champion> data) {
+        this.data = data;
+    }
 
-    public class Champion implements Parcelable {
+    public static class Champion implements Parcelable {
         String id;
         long key;
         String name;
         String title;
         Image image;
         List<String> tags;
+
+        public Champion(String id, long key, String name, String title, Image image, List<String> tags) {
+            this.id = id;
+            this.key = key;
+            this.name = name;
+            this.title = title;
+            this.image = image;
+            this.tags = tags;
+        }
 
         protected Champion(Parcel in) {
             id = in.readString();
@@ -55,8 +67,12 @@ public class ChampionResponse {
             parcel.writeStringList(tags);
         }
 
-        public class Image implements Parcelable {
+        public static class Image implements Parcelable {
             String full;
+
+            public Image(String full) {
+                this.full = full;
+            }
 
             protected Image(Parcel in) {
                 full = in.readString();
