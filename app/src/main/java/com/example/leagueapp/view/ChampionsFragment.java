@@ -40,13 +40,11 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
 
     private static final String TAG = "ChampionsFragment";
     private final String SEARCH_QUERY_KEY = "SEARCH_QUERY_KEY";
-    private final String SEARCH_VIEW_FOCUS_KEY = "SEARCH_VIEW_FOCUS_KEY";
     private ChampionContract.ChampionPresenter championPresenter = new ChampionPresenter(new DataManager());
     private ChampionAdapter championAdapter;
     private FragmentChampionsBinding binding;
     private ChampionSearchView searchView;
     private String searchQuery;
-    private boolean isSearchViewFocused;
 
     public ChampionsFragment() {
         // Required empty public constructor
@@ -57,7 +55,6 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         championAdapter = new ChampionAdapter(this);
-        championAdapter.setHasStableIds(true);
         championPresenter.onAttach(this);
     }
 
@@ -68,7 +65,6 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         binding = FragmentChampionsBinding.inflate(inflater, container, false);
         if (savedInstanceState != null) {
             searchQuery = savedInstanceState.getString(SEARCH_QUERY_KEY);
-            isSearchViewFocused = savedInstanceState.getBoolean(SEARCH_VIEW_FOCUS_KEY);
         }
         binding.error.retryButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,12 +75,6 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
             }
         });
         return binding.getRoot();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
     }
 
     @Override
@@ -111,16 +101,34 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         if (searchView != null) {
-            outState.putString(SEARCH_QUERY_KEY, searchView.getQuery().toString());
-            outState.putBoolean(SEARCH_VIEW_FOCUS_KEY, searchView.hasFocus());
+            outState.putString(SEARCH_QUERY_KEY, searchQuery);
         }
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        menu.clear();
         inflater.inflate(R.menu.champions_menu, menu);
         final MenuItem searchItem = menu.findItem(R.id.action_search);
+        final MenuItem favoriteItem = menu.findItem(R.id.action_favorite);
         searchView = (ChampionSearchView) searchItem.getActionView();
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                favoriteItem.setVisible(false);
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                favoriteItem.setVisible(true);
+                return true;
+            }
+        });
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            searchItem.expandActionView();
+            searchView.clearFocus();
+        }
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -134,17 +142,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
                 return true;
             }
         });
-
-        if (searchQuery != null && !searchQuery.isEmpty()
-                || searchQuery != null && isSearchViewFocused) {
-            searchItem.expandActionView();
-            searchView.setQuery(searchQuery, false);
-            if (isSearchViewFocused) {
-                searchView.requestFocus();
-            } else {
-                searchView.clearFocus();
-            }
-        }
+        searchView.setQuery(searchQuery, false);
     }
 
     @Override
@@ -159,6 +157,12 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDestroyView() {
+        binding = null;
+        super.onDestroyView();
     }
 
     @Override
@@ -218,9 +222,6 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
                 .addSharedElement(cardView, championCardTransitionName)
                 .build();
 
-        searchQuery = searchView.getQuery().toString();
-        isSearchViewFocused = false;
-        searchView.clearFocus();
         searchView.setOnQueryTextListener(null);
 
         NavDirections action = ChampionsFragmentDirections.actionChampionsFragmentToDetailsFragment(championName, champion);

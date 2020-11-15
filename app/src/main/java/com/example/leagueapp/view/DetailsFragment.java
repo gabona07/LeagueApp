@@ -34,6 +34,7 @@ import com.google.android.material.transition.MaterialFadeThrough;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.net.UnknownHostException;
 import java.util.List;
 
 
@@ -74,20 +75,23 @@ public class DetailsFragment extends Fragment implements ChampionContract.Detail
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (getArguments() != null) {
-            ChampionResponse.Champion champion = DetailsFragmentArgs.fromBundle(getArguments()).getChampion();
+            final ChampionResponse.Champion champion = DetailsFragmentArgs.fromBundle(getArguments()).getChampion();
             displayChampionBaseInfo(champion);
+            binding.error.retryButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    view.setVisibility(View.INVISIBLE);
+                    binding.error.retryLoading.setVisibility(View.VISIBLE);
+                    presenter.fetchChampionDetails(champion.getId());
+                }
+            });
             presenter.fetchChampionDetails(champion.getId());
         }
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
-
-    @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        menu.clear();
         inflater.inflate(R.menu.details_menu, menu);
     }
 
@@ -106,6 +110,12 @@ public class DetailsFragment extends Fragment implements ChampionContract.Detail
     }
 
     @Override
+    public void onDestroyView() {
+        binding = null;
+        super.onDestroyView();
+    }
+
+    @Override
     public void onDestroy() {
         presenter.onDetach();
         super.onDestroy();
@@ -113,6 +123,7 @@ public class DetailsFragment extends Fragment implements ChampionContract.Detail
 
     @Override
     public void displayChampionDetails(DetailsResponse.Detail championDetails) {
+        binding.error.errorContainer.setVisibility(View.GONE);
         DetailsResponse.Detail.Info championInfo = championDetails.getInfo();
         binding.championLore.setText(championDetails.getLore());
         List<DetailsResponse.Detail.Spell> spells = championDetails.getSpells();
@@ -139,6 +150,19 @@ public class DetailsFragment extends Fragment implements ChampionContract.Detail
     @Override
     public void onError(Exception exception) {
         Log.d(TAG, "onError: " + exception.getMessage());
+        binding.error.errorContainer.setBackgroundColor(getResources().getColor(R.color.colorSurface));
+        if (exception.getCause() instanceof UnknownHostException) {
+            binding.error.errorImage.setImageResource(R.drawable.error_connection);
+            binding.error.errorTitle.setText(R.string.connection_error_title);
+            binding.error.errorMessage.setText(R.string.connection_error_message);
+        } else {
+            binding.error.errorImage.setImageResource(R.drawable.error_generic);
+            binding.error.errorTitle.setText(R.string.generic_error_title);
+            binding.error.errorMessage.setText(R.string.generic_error_message);
+        }
+        binding.error.retryLoading.setVisibility(View.INVISIBLE);
+        binding.error.retryButton.setVisibility(View.VISIBLE);
+        binding.error.errorContainer.setVisibility(View.VISIBLE);
     }
 
     private void displayChampionBaseInfo(ChampionResponse.Champion champion) {

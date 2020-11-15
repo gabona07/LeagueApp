@@ -28,6 +28,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
 
     public ChampionAdapter(OnChampClickListener onChampClickListener) {
         this.onChampClickListener = onChampClickListener;
+        setHasStableIds(true);
     }
 
     @Override
