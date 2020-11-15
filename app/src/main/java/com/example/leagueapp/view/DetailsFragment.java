@@ -35,7 +35,6 @@ import com.google.android.material.transition.MaterialFadeThrough;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.UnknownHostException;
-import java.util.List;
 
 
 public class DetailsFragment extends Fragment implements ChampionContract.DetailsView {
@@ -77,15 +76,12 @@ public class DetailsFragment extends Fragment implements ChampionContract.Detail
         if (getArguments() != null) {
             final ChampionResponse.Champion champion = DetailsFragmentArgs.fromBundle(getArguments()).getChampion();
             displayChampionBaseInfo(champion);
-            binding.error.retryButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    view.setVisibility(View.INVISIBLE);
-                    binding.error.retryLoading.setVisibility(View.VISIBLE);
-                    presenter.fetchChampionDetails(champion.getId());
-                }
+            binding.error.retryButton.setOnClickListener(view1 -> {
+                view1.setVisibility(View.INVISIBLE);
+                binding.error.retryLoading.setVisibility(View.VISIBLE);
+                presenter.fetchChampionDetails(champion.id);
             });
-            presenter.fetchChampionDetails(champion.getId());
+            presenter.fetchChampionDetails(champion.id);
         }
     }
 
@@ -124,17 +120,15 @@ public class DetailsFragment extends Fragment implements ChampionContract.Detail
     @Override
     public void displayChampionDetails(DetailsResponse.Detail championDetails) {
         binding.error.errorContainer.setVisibility(View.GONE);
-        DetailsResponse.Detail.Info championInfo = championDetails.getInfo();
-        binding.championLore.setText(championDetails.getLore());
-        List<DetailsResponse.Detail.Spell> spells = championDetails.getSpells();
-        spellsAdapter.setSpells(spells);
+        binding.championLore.setText(championDetails.lore);
+        spellsAdapter.setSpells(championDetails.spells);
         binding.spellsRecyclerView.setAdapter(spellsAdapter);
         binding.spellsRecyclerView.setHasFixedSize(true);
         binding.championDetailsContainer.setVisibility(View.VISIBLE);
-        animateProgress(binding.attackBar, championInfo.getAttack());
-        animateProgress(binding.defenseBar, championInfo.getDefense());
-        animateProgress(binding.magicBar, championInfo.getMagic());
-        animateProgress(binding.difficultyBar, championInfo.getDifficulty());
+        animateProgress(binding.attackBar, championDetails.info.getAttackProgress());
+        animateProgress(binding.defenseBar, championDetails.info.getDefenseProgress());
+        animateProgress(binding.magicBar, championDetails.info.getMagicProgress());
+        animateProgress(binding.difficultyBar, championDetails.info.getDifficultyProgress());
     }
 
     @Override
@@ -166,10 +160,12 @@ public class DetailsFragment extends Fragment implements ChampionContract.Detail
     }
 
     private void displayChampionBaseInfo(ChampionResponse.Champion champion) {
-        ChampionResponse.Champion.Image championImage = champion.getImage();
-        Glide.with(binding.detailedChampionIcon).load(championImage.getIconUrl()).into(binding.detailedChampionIcon);
-        binding.detailedChampionName.setText(champion.getName());
-        binding.detailedChampionTitle.setText(champion.getTitle());
+        ChampionResponse.Champion.Image championImage = champion.image;
+        if (championImage != null) {
+            Glide.with(binding.detailedChampionIcon).load(championImage.getIconUrl()).into(binding.detailedChampionIcon);
+        }
+        binding.detailedChampionName.setText(champion.name);
+        binding.detailedChampionTitle.setText(champion.title);
         binding.championTags.setText(champion.getTags());
 
     }

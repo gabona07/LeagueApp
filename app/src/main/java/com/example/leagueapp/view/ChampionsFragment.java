@@ -18,7 +18,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 
 import com.example.leagueapp.databinding.FragmentChampionsBinding;
 import com.example.leagueapp.model.DataManager;
@@ -66,13 +65,10 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         if (savedInstanceState != null) {
             searchQuery = savedInstanceState.getString(SEARCH_QUERY_KEY);
         }
-        binding.error.retryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.setVisibility(View.INVISIBLE);
-                binding.error.retryLoading.setVisibility(View.VISIBLE);
-                championPresenter.fetchChampions();
-            }
+        binding.error.retryButton.setOnClickListener(view -> {
+            view.setVisibility(View.INVISIBLE);
+            binding.error.retryLoading.setVisibility(View.VISIBLE);
+            championPresenter.fetchChampions();
         });
         return binding.getRoot();
     }
@@ -81,12 +77,9 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         postponeEnterTransition();
-        view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                startPostponedEnterTransition();
-                return true;
-            }
+        view.getViewTreeObserver().addOnPreDrawListener(() -> {
+            startPostponedEnterTransition();
+            return true;
         });
         binding.championsRecyclerView.setAdapter(championAdapter);
 
@@ -138,6 +131,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                searchQuery = newText;
                 championAdapter.getFilter().filter(newText);
                 return true;
             }

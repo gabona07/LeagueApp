@@ -45,7 +45,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
             } else {
                 String filterPattern = charSequence.toString().toLowerCase().trim();
                 for (ChampionResponse.Champion champion : championListFull) {
-                    if (champion.getName().toLowerCase().contains(filterPattern)) {
+                    if (champion.name.toLowerCase().contains(filterPattern)) {
                         filteredList.add(champion);
                     }
                 }
@@ -91,7 +91,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
                 onChampClickListener.addToFavorite(champion);
             } else {
                 ChampionResponse.Champion champion = championList.get(getAdapterPosition());
-                String championName = champion.getName();
+                String championName = champion.name;
                 onChampClickListener.onChampClick(cardView, champion, championName);
             }
         }
@@ -107,12 +107,12 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ChampionResponse.Champion currentChampion = championList.get(position);
-        holder.cardView.setTransitionName(currentChampion.getId());
+        holder.cardView.setTransitionName(currentChampion.id);
         Glide.with(holder.championIcon)
-                .load(currentChampion.getImage().getIconUrl())
+                .load(currentChampion.image.getIconUrl())
                 .into(holder.championIcon);
-        holder.championName.setText(currentChampion.getName());
-        holder.championTitle.setText(currentChampion.getTitle());
+        holder.championName.setText(currentChampion.name);
+        holder.championTitle.setText(currentChampion.title);
     }
 
     @Override
@@ -122,7 +122,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
 
     @Override
     public long getItemId(int position) {
-        return championList.get(position).getKey();
+        return championList.get(position).key;
     }
 
     public void setChampionList(List<ChampionResponse.Champion> championList) {

@@ -19,10 +19,4 @@ public class ChampionSearchView extends SearchView {
         View searchPlate = findViewById(androidx.appcompat.R.id.search_plate);
         searchPlate.setBackgroundResource(R.drawable.search_plate_bg);
     }
-
-    @Override
-    public void onActionViewCollapsed() {
-        clearFocus();
-        super.onActionViewCollapsed();
-    }
 }
