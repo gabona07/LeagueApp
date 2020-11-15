@@ -3,7 +3,7 @@ package com.example.leagueapp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
-
+import androidx.annotation.NonNull;
 import java.util.List;
 import java.util.Map;
 
@@ -15,12 +15,41 @@ public class ChampionResponse {
     }
 
     public static class Champion implements Parcelable {
+
         String id;
         long key;
         String name;
         String title;
         Image image;
         List<String> tags;
+
+        public void setId(@NonNull String id) {
+            this.id = id;
+        }
+
+        public void setKey(long key) {
+            this.key = key;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public void setImage(Image image) {
+            this.image = image;
+        }
+
+        public void setTags(List<String> tags) {
+            this.tags = tags;
+        }
+
+        public Creator<Champion> getCREATOR() {
+            return CREATOR;
+        }
 
         public Champion(String id, long key, String name, String title, Image image, List<String> tags) {
             this.id = id;

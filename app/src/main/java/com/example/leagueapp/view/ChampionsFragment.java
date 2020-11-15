@@ -1,5 +1,7 @@
 package com.example.leagueapp.view;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.FragmentNavigator;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.room.Room;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +23,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
+import com.example.leagueapp.database.AppDatabase;
+import com.example.leagueapp.database.ChampionEntity;
 import com.example.leagueapp.databinding.FragmentChampionsBinding;
 import com.example.leagueapp.model.DataManager;
 import com.example.leagueapp.widget.ChampionSearchView;
@@ -230,5 +235,15 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     @Override
     public void addToFavorite(ChampionResponse.Champion champion) {
         Log.d(TAG, "addToFavorite: " + champion.toString());
+        ChampionEntity championEntity = new ChampionEntity(champion.getId(), champion.getKey(), champion.getName(), champion.getTitle(), champion.getImage().getIconUrl());
+        AppDatabase database = Room.databaseBuilder(this.getActivity(), AppDatabase.class, "db-contacts")
+                .allowMainThreadQueries()
+                .build();
+        try {
+            database.getChampionDao().insert(championEntity);
+        } catch (SQLiteConstraintException alreadyInDatabase) {
+            return;
+        }
+        System.out.println(database.getChampionDao().getChampions());
     }
 }
