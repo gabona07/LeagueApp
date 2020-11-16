@@ -201,7 +201,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     }
 
     @Override
-    public void onChampClick(CardView cardView, ChampionResponse.Champion champion, String championName) {
+    public void onChampCardClick(CardView cardView, ChampionResponse.Champion champion, String championName) {
         long duration = getResources().getInteger(R.integer.reply_motion_duration);
         MaterialElevationScale exitTransition = new MaterialElevationScale(false);
         exitTransition.setDuration(duration);
@@ -223,7 +223,14 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     }
 
     @Override
-    public void addToFavorite(ChampionResponse.Champion champion) {
-        Log.d(TAG, "addToFavorite: " + champion.toString());
+    public void addToFavorites(ChampionResponse.Champion champion) {
+        // TODO Add to database
+        Log.d(TAG, "addToFavorite: " + champion.isFavorite);
+    }
+
+    @Override
+    public void removeFromFavorites(ChampionResponse.Champion champion) {
+        // TODO Remove from database
+        Log.d(TAG, "removeFromFavorites: " + champion.isFavorite);
     }
 }

@@ -50,12 +50,11 @@
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="the Darkin Blade" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/favoriteButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/favorite_button_size"
+            android:layout_height="@dimen/favorite_button_size"
             android:layout_marginEnd="@dimen/favorite_button_margin"
-            android:background="@drawable/ic_favorite_unselected"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

@@ -1,5 +1,6 @@
 package com.example.leagueapp.adapter;
 
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +72,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
         final ImageView championIcon;
         final TextView championName;
         final TextView championTitle;
-
+        final ImageView favButton;
 
         ViewHolder(@NonNull View itemView, OnChampClickListener onChampClickListener) {
             super(itemView);
@@ -80,6 +81,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
             championIcon = itemView.findViewById(R.id.championIcon);
             championName = itemView.findViewById(R.id.detailedChampionName);
             championTitle = itemView.findViewById(R.id.championTitle);
+            favButton = itemView.findViewById(R.id.favoriteButton);
             itemView.setOnClickListener(this);
             itemView.findViewById(R.id.favoriteButton).setOnClickListener(this);
         }
@@ -88,11 +90,19 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
         public void onClick(View view) {
             if (view.getId() == R.id.favoriteButton) {
                 ChampionResponse.Champion champion = championList.get(getAdapterPosition());
-                onChampClickListener.addToFavorite(champion);
+                if (!champion.isFavorite) {
+                    champion.isFavorite = true;
+                    onChampClickListener.addToFavorites(champion);
+                } else {
+                    champion.isFavorite = false;
+                    onChampClickListener.removeFromFavorites(champion);
+                }
+                AnimatedVectorDrawable avd = (AnimatedVectorDrawable) favButton.getDrawable();
+                avd.start();
             } else {
                 ChampionResponse.Champion champion = championList.get(getAdapterPosition());
                 String championName = champion.name;
-                onChampClickListener.onChampClick(cardView, champion, championName);
+                onChampClickListener.onChampCardClick(cardView, champion, championName);
             }
         }
     }
@@ -108,11 +118,18 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ChampionResponse.Champion currentChampion = championList.get(position);
         holder.cardView.setTransitionName(currentChampion.id);
-        Glide.with(holder.championIcon)
-                .load(currentChampion.image.getIconUrl())
-                .into(holder.championIcon);
+        if (currentChampion.image != null) {
+            Glide.with(holder.championIcon)
+                    .load(currentChampion.image.getIconUrl())
+                    .into(holder.championIcon);
+        }
         holder.championName.setText(currentChampion.name);
         holder.championTitle.setText(currentChampion.title);
+        if (currentChampion.isFavorite) {
+            holder.favButton.setImageResource(R.drawable.avd_favorite_on);
+        } else {
+            holder.favButton.setImageResource(R.drawable.avd_favorite_off);
+        }
     }
 
     @Override
@@ -140,7 +157,8 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
     }
 
     public interface OnChampClickListener {
-        void onChampClick(CardView cardView, ChampionResponse.Champion champion, String championName);
-        void addToFavorite(ChampionResponse.Champion champion);
+        void onChampCardClick(CardView cardView, ChampionResponse.Champion champion, String championName);
+        void addToFavorites(ChampionResponse.Champion champion);
+        void removeFromFavorites(ChampionResponse.Champion champion);
     }
 }
