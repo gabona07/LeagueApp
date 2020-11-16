@@ -11,7 +11,8 @@ data class ChampionResponse(@JvmField val data: Map<String, Champion>) {
                         @JvmField val name: String,
                         @JvmField val title: String,
                         @JvmField val image: Image?,
-                        @JvmField val tags: ArrayList<String>?) : Parcelable {
+                        @JvmField val tags: ArrayList<String>?,
+                        @JvmField var isFavorite: Boolean) : Parcelable {
 
         data class Image(@JvmField val full: String) : Parcelable {
 
@@ -44,7 +45,8 @@ data class ChampionResponse(@JvmField val data: Map<String, Champion>) {
                 parcel.readString().toString(),
                 parcel.readString().toString(),
                 parcel.readParcelable(Image::class.java.classLoader),
-                parcel.createStringArrayList())
+                parcel.createStringArrayList(),
+                parcel.readByte() != 0.toByte())
 
         fun getTags(): String? = tags?.joinToString(", ") { it }
 
@@ -55,6 +57,7 @@ data class ChampionResponse(@JvmField val data: Map<String, Champion>) {
             parcel.writeString(title)
             parcel.writeParcelable(image, flags)
             parcel.writeStringList(tags)
+            parcel.writeByte(if (isFavorite) 1 else 0)
         }
 
         override fun describeContents(): Int {
