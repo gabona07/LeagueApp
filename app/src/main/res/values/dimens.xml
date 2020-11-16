@@ -36,4 +36,5 @@
     <dimen name="error_title_margin">8dp</dimen>
     <dimen name="error_message_margin">4dp</dimen>
     <dimen name="retry_loading_margin">16dp</dimen>
+    <dimen name="favorite_button_size">30dp</dimen>
 </resources>
