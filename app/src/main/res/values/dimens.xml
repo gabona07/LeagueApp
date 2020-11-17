@@ -5,7 +5,7 @@
     <dimen name="favorite_button_margin">6dp</dimen>
     <dimen name="champion_card_radius">2dp</dimen>
     <dimen name="champion_card_margin">5dp</dimen>
-    <dimen name="champ_icon_size">65dp</dimen>
+    <dimen name="champ_icon_size">60dp</dimen>
     <dimen name="search_plate_radius">6dp</dimen>
     <dimen name="search_plate_stroke_width">4dp</dimen>
     <dimen name="detail_champ_icon_size">80dp</dimen>
@@ -36,4 +36,6 @@
     <dimen name="error_title_margin">8dp</dimen>
     <dimen name="error_message_margin">4dp</dimen>
     <dimen name="retry_loading_margin">16dp</dimen>
+    <dimen name="favorite_button_size">30dp</dimen>
+    <dimen name="champ_icon_margin">5dp</dimen>
 </resources>
