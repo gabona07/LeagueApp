@@ -5,15 +5,27 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.CompositePageTransformer;
+import androidx.viewpager2.widget.MarginPageTransformer;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.leagueapp.R;
+import com.example.leagueapp.adapter.FavoriteAdapter;
+import com.example.leagueapp.database.ChampionEntity;
 import com.google.android.material.transition.MaterialFadeThrough;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FavoriteFragment extends Fragment {
+
+    private FavoriteAdapter adapter = new FavoriteAdapter();
+    private ViewPager2 viewPager;
 
     public FavoriteFragment() {
         
@@ -37,5 +49,33 @@ public class FavoriteFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        viewPager = view.findViewById(R.id.favoriteViewpager);
+        viewPagerInit();
+    }
+
+
+    private void viewPagerInit() {
+        viewPager.setAdapter(adapter);
+        viewPager.setClipToPadding(false);
+        viewPager.setClipChildren(false);
+        viewPager.setOffscreenPageLimit(3);
+        viewPager.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+        CompositePageTransformer pageTransformer = new CompositePageTransformer();
+        pageTransformer.addTransformer(new MarginPageTransformer(10));
+        pageTransformer.addTransformer(new ViewPager2.PageTransformer() {
+            @Override
+            public void transformPage(@NonNull View page, float position) {
+                float r = 1 - Math.abs(position);
+                page.setScaleY(0.95f + r * 0.05f);
+            }
+        });
+        viewPager.setPageTransformer(pageTransformer);
+        List<ChampionEntity> championEntityList = new ArrayList<>();
+        championEntityList.add(new ChampionEntity("Aatrox", 266L, "Aatrox", "the Darkin Blade", "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg"));
+        championEntityList.add(new ChampionEntity("Aatrox", 266L, "Aatrox", "the Darkin Blade", "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg"));
+        championEntityList.add(new ChampionEntity("Aatrox", 266L, "Aatrox", "the Darkin Blade", "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg"));
+        championEntityList.add(new ChampionEntity("Aatrox", 266L, "Aatrox", "the Darkin Blade", "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg"));
+        championEntityList.add(new ChampionEntity("Aatrox", 266L, "Aatrox", "the Darkin Blade", "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg"));
+        adapter.setChampions(championEntityList);
     }
 }
