@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.example.leagueapp.model.ChampionResponse;
-
 @Entity(tableName = "champions")
 public class ChampionEntity {
 

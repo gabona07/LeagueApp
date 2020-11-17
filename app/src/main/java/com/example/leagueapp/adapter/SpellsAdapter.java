@@ -46,10 +46,10 @@ public class SpellsAdapter extends RecyclerView.Adapter<SpellsAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DetailsResponse.Detail.Spell currentSpell = spells.get(position);
         Glide.with(holder.spellIcon)
-                .load(currentSpell.getImage().getSpellIcon())
+                .load(currentSpell.image.getSpellIcon())
                 .into(holder.spellIcon);
-        holder.spellName.setText(currentSpell.getName());
-        holder.spellDescription.setText(Html.fromHtml(currentSpell.getDescription()));
+        holder.spellName.setText(currentSpell.name);
+        holder.spellDescription.setText(Html.fromHtml(currentSpell.description));
     }
 
     @Override

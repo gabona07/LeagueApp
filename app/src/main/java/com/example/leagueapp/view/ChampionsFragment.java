@@ -1,7 +1,5 @@
 package com.example.leagueapp.view;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,7 +19,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 
 import com.example.leagueapp.database.AppDatabase;
 import com.example.leagueapp.database.ChampionEntity;
@@ -45,13 +42,13 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
 
     private static final String TAG = "ChampionsFragment";
     private final String SEARCH_QUERY_KEY = "SEARCH_QUERY_KEY";
-    private final String SEARCH_VIEW_FOCUS_KEY = "SEARCH_VIEW_FOCUS_KEY";
-    private ChampionContract.ChampionPresenter championPresenter = new ChampionPresenter(new DataManager());
-    private ChampionAdapter championAdapter;
+    private final ChampionContract.ChampionPresenter championPresenter = new ChampionPresenter(new DataManager());
+    private final ChampionAdapter championAdapter = new ChampionAdapter();
     private FragmentChampionsBinding binding;
     private ChampionSearchView searchView;
     private String searchQuery;
-    private boolean isSearchViewFocused;
+    private AppDatabase appDatabase;
+
 
     public ChampionsFragment() {
         // Required empty public constructor
@@ -61,9 +58,10 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        championAdapter = new ChampionAdapter(this);
-        championAdapter.setHasStableIds(true);
         championPresenter.onAttach(this);
+        championAdapter.onAttach(this);
+        championAdapter.setHasStableIds(true);
+        appDatabase = Room.databaseBuilder(this.getContext(), AppDatabase.class, "db-contacts").allowMainThreadQueries().build();
     }
 
     @Override
@@ -73,37 +71,25 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         binding = FragmentChampionsBinding.inflate(inflater, container, false);
         if (savedInstanceState != null) {
             searchQuery = savedInstanceState.getString(SEARCH_QUERY_KEY);
-            isSearchViewFocused = savedInstanceState.getBoolean(SEARCH_VIEW_FOCUS_KEY);
         }
-        binding.error.retryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.setVisibility(View.INVISIBLE);
-                binding.error.retryLoading.setVisibility(View.VISIBLE);
-                championPresenter.fetchChampions();
-            }
+        binding.error.retryButton.setOnClickListener(view -> {
+            view.setVisibility(View.INVISIBLE);
+            binding.error.retryLoading.setVisibility(View.VISIBLE);
+            championPresenter.fetchChampions();
         });
+        binding.championsRecyclerView.setAdapter(championAdapter);
+        championAdapter.notifyDataSetChanged();
         return binding.getRoot();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         postponeEnterTransition();
-        view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                startPostponedEnterTransition();
-                return true;
-            }
+        view.getViewTreeObserver().addOnPreDrawListener(() -> {
+            startPostponedEnterTransition();
+            return true;
         });
-        binding.championsRecyclerView.setAdapter(championAdapter);
 
         // Navigation Component always rebuilds the fragment's view,
         // so this is a workaround to prevent fetching the champions again (we could also use LiveData)
@@ -116,16 +102,34 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         if (searchView != null) {
-            outState.putString(SEARCH_QUERY_KEY, searchView.getQuery().toString());
-            outState.putBoolean(SEARCH_VIEW_FOCUS_KEY, searchView.hasFocus());
+            outState.putString(SEARCH_QUERY_KEY, searchQuery);
         }
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        menu.clear();
         inflater.inflate(R.menu.champions_menu, menu);
         final MenuItem searchItem = menu.findItem(R.id.action_search);
+        final MenuItem favoriteItem = menu.findItem(R.id.action_favorite);
         searchView = (ChampionSearchView) searchItem.getActionView();
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                favoriteItem.setVisible(false);
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                favoriteItem.setVisible(true);
+                return true;
+            }
+        });
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            searchItem.expandActionView();
+            searchView.clearFocus();
+        }
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -135,21 +139,12 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                searchQuery = newText;
                 championAdapter.getFilter().filter(newText);
                 return true;
             }
         });
-
-        if (searchQuery != null && !searchQuery.isEmpty()
-                || searchQuery != null && isSearchViewFocused) {
-            searchItem.expandActionView();
-            searchView.setQuery(searchQuery, false);
-            if (isSearchViewFocused) {
-                searchView.requestFocus();
-            } else {
-                searchView.clearFocus();
-            }
-        }
+        searchView.setQuery(searchQuery, false);
     }
 
     @Override
@@ -167,9 +162,15 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     }
 
     @Override
+    public void onDestroyView() {
+        binding = null;
+        super.onDestroyView();
+    }
+
+    @Override
     public void onDestroy() {
-        championAdapter.onDestroy();
         championPresenter.onDetach();
+        championAdapter.onDetach();
         super.onDestroy();
     }
 
@@ -208,7 +209,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     }
 
     @Override
-    public void onChampClick(CardView cardView, ChampionResponse.Champion champion, String championName) {
+    public void onChampCardClick(CardView cardView, ChampionResponse.Champion champion, String championName) {
         long duration = getResources().getInteger(R.integer.reply_motion_duration);
         MaterialElevationScale exitTransition = new MaterialElevationScale(false);
         exitTransition.setDuration(duration);
@@ -223,9 +224,6 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
                 .addSharedElement(cardView, championCardTransitionName)
                 .build();
 
-        searchQuery = searchView.getQuery().toString();
-        isSearchViewFocused = false;
-        searchView.clearFocus();
         searchView.setOnQueryTextListener(null);
 
         NavDirections action = ChampionsFragmentDirections.actionChampionsFragmentToDetailsFragment(championName, champion);
@@ -233,17 +231,18 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     }
 
     @Override
-    public void addToFavorite(ChampionResponse.Champion champion) {
-        Log.d(TAG, "addToFavorite: " + champion.toString());
-        ChampionEntity championEntity = new ChampionEntity(champion.getId(), champion.getKey(), champion.getName(), champion.getTitle(), champion.getImage().getIconUrl());
-        AppDatabase database = Room.databaseBuilder(this.getActivity(), AppDatabase.class, "db-contacts")
-                .allowMainThreadQueries()
-                .build();
-        try {
-            database.getChampionDao().insert(championEntity);
-        } catch (SQLiteConstraintException alreadyInDatabase) {
-            return;
-        }
-        System.out.println(database.getChampionDao().getChampions());
+    public void addToFavorites(ChampionResponse.Champion champion) {
+        // TODO Add to database
+        Log.d(TAG, "addToFavorite: FAVORITE -> " + champion.isFavorite);
+        ChampionEntity entity = new ChampionEntity(champion.id, champion.key, champion.name, champion.title, champion.image.getIconUrl());
+        appDatabase.getChampionDao().insert(entity);
+    }
+
+    @Override
+    public void removeFromFavorites(ChampionResponse.Champion champion) {
+        // TODO Remove from database
+        Log.d(TAG, "removeFromFavorites: FAVORITE -> " + champion.isFavorite);
+        ChampionEntity entity = new ChampionEntity(champion.id, champion.key, champion.name, champion.title, champion.image.getIconUrl());
+        appDatabase.getChampionDao().delete(entity);
     }
 }

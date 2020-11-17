@@ -16,7 +16,7 @@ import com.google.android.material.transition.MaterialFadeThrough;
 public class FavoriteFragment extends Fragment {
 
     public FavoriteFragment() {
-        // Required empty public constructor
+        
     }
 
     @Override

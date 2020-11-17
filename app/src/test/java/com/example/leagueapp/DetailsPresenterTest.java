@@ -10,19 +10,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.Mockito.*;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
-import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.functions.Function;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
@@ -60,19 +56,9 @@ public class DetailsPresenterTest {
 
         presenter.onAttach(mockedView);
 
-        RxJavaPlugins.setIoSchedulerHandler(new Function<Scheduler, Scheduler>() {
-            @Override
-            public Scheduler apply(Scheduler scheduler) throws Exception {
-                return Schedulers.trampoline();
-            }
-        });
+        RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
 
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(new Function<Callable<Scheduler>, Scheduler>() {
-            @Override
-            public Scheduler apply(Callable<Scheduler> schedulers) throws Exception {
-                return Schedulers.trampoline();
-            }
-        });
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulers -> Schedulers.trampoline());
     }
 
 
