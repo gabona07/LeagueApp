@@ -7,4 +7,13 @@
     android:background="?attr/background"
     tools:context=".view.FavoriteFragment">
 
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/favoriteViewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="40dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 </FrameLayout>

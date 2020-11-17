@@ -1,7 +1,12 @@
 package com.example.leagueapp.model;
 
+import androidx.room.Room;
+
 import com.example.leagueapp.ApiService;
 import com.example.leagueapp.RetrofitProvider;
+import com.example.leagueapp.database.AppDatabase;
+import com.example.leagueapp.database.ChampionDao;
+
 import io.reactivex.Single;
 
 public class DataManager {
@@ -13,4 +18,5 @@ public class DataManager {
     }
 
     public Single<DetailsResponse> getChampionDetails(String championId) {return apiService.getChampionDetails(championId);}
+
 }

@@ -34,7 +34,7 @@ public class ChampionPresenterTest {
         fakeTags.add("Fighter");
         fakeTags.add("Tank");
 
-        ChampionResponse.Champion fakeChampion = new ChampionResponse.Champion("Aatrox", 266, "Aatrox", "the Darkin Blade", new ChampionResponse.Champion.Image("Aatrox.png"), fakeTags);
+        ChampionResponse.Champion fakeChampion = new ChampionResponse.Champion("Aatrox", 266, "Aatrox", "the Darkin Blade", new ChampionResponse.Champion.Image("Aatrox.png"), fakeTags, false);
 
         Map<String, ChampionResponse.Champion> fakeData = new HashMap<>();
         fakeData.put("Aatrox", fakeChampion);
