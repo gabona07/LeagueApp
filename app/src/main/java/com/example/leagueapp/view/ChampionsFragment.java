@@ -40,7 +40,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     private static final String TAG = "ChampionsFragment";
     private final String SEARCH_QUERY_KEY = "SEARCH_QUERY_KEY";
     private ChampionContract.ChampionPresenter championPresenter = new ChampionPresenter(new DataManager());
-    private ChampionAdapter championAdapter;
+    private ChampionAdapter championAdapter = new ChampionAdapter();
     private FragmentChampionsBinding binding;
     private ChampionSearchView searchView;
     private String searchQuery;
@@ -53,8 +53,9 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        championAdapter = new ChampionAdapter(this);
         championPresenter.onAttach(this);
+        championAdapter.onAttach(this);
+        championAdapter.setHasStableIds(true);
     }
 
     @Override
@@ -70,6 +71,8 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
             binding.error.retryLoading.setVisibility(View.VISIBLE);
             championPresenter.fetchChampions();
         });
+        binding.championsRecyclerView.setAdapter(championAdapter);
+        championAdapter.notifyDataSetChanged();
         return binding.getRoot();
     }
 
@@ -81,7 +84,6 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
             startPostponedEnterTransition();
             return true;
         });
-        binding.championsRecyclerView.setAdapter(championAdapter);
 
         // Navigation Component always rebuilds the fragment's view,
         // so this is a workaround to prevent fetching the champions again (we could also use LiveData)
@@ -161,8 +163,8 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
 
     @Override
     public void onDestroy() {
-        championAdapter.onDestroy();
         championPresenter.onDetach();
+        championAdapter.onDetach();
         super.onDestroy();
     }
 
@@ -225,12 +227,12 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     @Override
     public void addToFavorites(ChampionResponse.Champion champion) {
         // TODO Add to database
-        Log.d(TAG, "addToFavorite: " + champion.isFavorite);
+        Log.d(TAG, "addToFavorite: FAVORITE -> " + champion.isFavorite);
     }
 
     @Override
     public void removeFromFavorites(ChampionResponse.Champion champion) {
         // TODO Remove from database
-        Log.d(TAG, "removeFromFavorites: " + champion.isFavorite);
+        Log.d(TAG, "removeFromFavorites: FAVORITE -> " + champion.isFavorite);
     }
 }
