@@ -28,6 +28,11 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
     private List<ChampionResponse.Champion> championList = new ArrayList<>();
     private List<ChampionResponse.Champion> championListFull = new ArrayList<>(championList);
 
+    public ChampionAdapter(OnChampClickListener onChampClickListener) {
+        this.onChampClickListener = onChampClickListener;
+        setHasStableIds(true);
+    }
+
     @Override
     public Filter getFilter() {
         return championFilter;
@@ -151,11 +156,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
         return !championListFull.isEmpty();
     }
 
-    public void onAttach(OnChampClickListener onChampClickListener) {
-        this.onChampClickListener = onChampClickListener;
-    }
-
-    public void onDetach() {
+    public void onDestroy() {
         this.onChampClickListener = null;
     }
 

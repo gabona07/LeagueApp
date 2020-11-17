@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.FragmentNavigator;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.room.Room;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,8 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.leagueapp.database.AppDatabase;
-import com.example.leagueapp.database.ChampionEntity;
 import com.example.leagueapp.databinding.FragmentChampionsBinding;
 import com.example.leagueapp.model.DataManager;
 import com.example.leagueapp.widget.ChampionSearchView;
@@ -43,11 +40,11 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     private static final String TAG = "ChampionsFragment";
     private final String SEARCH_QUERY_KEY = "SEARCH_QUERY_KEY";
     private final ChampionContract.ChampionPresenter championPresenter = new ChampionPresenter(new DataManager());
-    private final ChampionAdapter championAdapter = new ChampionAdapter();
+    private ChampionAdapter championAdapter;
     private FragmentChampionsBinding binding;
     private ChampionSearchView searchView;
     private String searchQuery;
-    private AppDatabase appDatabase;
+//    private AppDatabase appDatabase;
 
 
     public ChampionsFragment() {
@@ -59,9 +56,8 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         championPresenter.onAttach(this);
-        championAdapter.onAttach(this);
-        championAdapter.setHasStableIds(true);
-        appDatabase = Room.databaseBuilder(this.getContext(), AppDatabase.class, "db-contacts").allowMainThreadQueries().build();
+        championAdapter = new ChampionAdapter(this);
+//        appDatabase = Room.databaseBuilder(this.getContext(), AppDatabase.class, "db-contacts").allowMainThreadQueries().build();
     }
 
     @Override
@@ -78,7 +74,6 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
             championPresenter.fetchChampions();
         });
         binding.championsRecyclerView.setAdapter(championAdapter);
-        championAdapter.notifyDataSetChanged();
         return binding.getRoot();
     }
 
@@ -128,6 +123,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         });
         if (searchQuery != null && !searchQuery.isEmpty()) {
             searchItem.expandActionView();
+            searchView.setQuery(searchQuery, false);
             searchView.clearFocus();
         }
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -144,7 +140,6 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
                 return true;
             }
         });
-        searchView.setQuery(searchQuery, false);
     }
 
     @Override
@@ -170,7 +165,7 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     @Override
     public void onDestroy() {
         championPresenter.onDetach();
-        championAdapter.onDetach();
+        championAdapter.onDestroy();
         super.onDestroy();
     }
 
@@ -234,15 +229,15 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     public void addToFavorites(ChampionResponse.Champion champion) {
         // TODO Add to database
         Log.d(TAG, "addToFavorite: FAVORITE -> " + champion.isFavorite);
-        ChampionEntity entity = new ChampionEntity(champion.id, champion.key, champion.name, champion.title, champion.image.getIconUrl());
-        appDatabase.getChampionDao().insert(entity);
+//        ChampionEntity entity = new ChampionEntity(champion.id, champion.key, champion.name, champion.title, champion.image.getIconUrl());
+//        appDatabase.getChampionDao().insert(entity);
     }
 
     @Override
     public void removeFromFavorites(ChampionResponse.Champion champion) {
         // TODO Remove from database
         Log.d(TAG, "removeFromFavorites: FAVORITE -> " + champion.isFavorite);
-        ChampionEntity entity = new ChampionEntity(champion.id, champion.key, champion.name, champion.title, champion.image.getIconUrl());
-        appDatabase.getChampionDao().delete(entity);
+//        ChampionEntity entity = new ChampionEntity(champion.id, champion.key, champion.name, champion.title, champion.image.getIconUrl());
+//        appDatabase.getChampionDao().delete(entity);
     }
 }
