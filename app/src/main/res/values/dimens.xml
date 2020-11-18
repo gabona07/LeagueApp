@@ -38,4 +38,5 @@
     <dimen name="retry_loading_margin">16dp</dimen>
     <dimen name="favorite_button_size">30dp</dimen>
     <dimen name="champ_icon_margin">5dp</dimen>
+    <integer name="viewpager_card_margin">8</integer>
 </resources>
