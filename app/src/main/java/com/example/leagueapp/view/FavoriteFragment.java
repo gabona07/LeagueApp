@@ -56,18 +56,13 @@ public class FavoriteFragment extends Fragment {
 
     private void viewPagerInit() {
         viewPager.setAdapter(adapter);
-        viewPager.setClipToPadding(false);
-        viewPager.setClipChildren(false);
         viewPager.setOffscreenPageLimit(3);
         viewPager.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
         CompositePageTransformer pageTransformer = new CompositePageTransformer();
-        pageTransformer.addTransformer(new MarginPageTransformer(10));
-        pageTransformer.addTransformer(new ViewPager2.PageTransformer() {
-            @Override
-            public void transformPage(@NonNull View page, float position) {
-                float r = 1 - Math.abs(position);
-                page.setScaleY(0.95f + r * 0.05f);
-            }
+        pageTransformer.addTransformer(new MarginPageTransformer(R.integer.viewpager_card_margin));
+        pageTransformer.addTransformer((page, position) -> {
+            float r = 1 - Math.abs(position);
+            page.setScaleY(0.85f + r * 0.15f);
         });
         viewPager.setPageTransformer(pageTransformer);
         List<ChampionEntity> championEntityList = new ArrayList<>();
