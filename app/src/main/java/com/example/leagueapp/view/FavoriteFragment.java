@@ -59,7 +59,8 @@ public class FavoriteFragment extends Fragment {
         viewPager.setOffscreenPageLimit(3);
         viewPager.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
         CompositePageTransformer pageTransformer = new CompositePageTransformer();
-        pageTransformer.addTransformer(new MarginPageTransformer(R.integer.viewpager_card_margin));
+        int champCardMargin = getResources().getInteger(R.integer.viewpager_card_margin);
+        pageTransformer.addTransformer(new MarginPageTransformer(champCardMargin));
         pageTransformer.addTransformer((page, position) -> {
             float r = 1 - Math.abs(position);
             page.setScaleY(0.85f + r * 0.15f);

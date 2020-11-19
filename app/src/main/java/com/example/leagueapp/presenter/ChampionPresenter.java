@@ -2,7 +2,6 @@ package com.example.leagueapp.presenter;
 
 import com.example.leagueapp.contract.BaseContract;
 import com.example.leagueapp.contract.ChampionContract;
-import com.example.leagueapp.database.AppDatabase;
 import com.example.leagueapp.model.ChampionResponse;
 import com.example.leagueapp.model.DataManager;
 import java.util.ArrayList;
@@ -16,7 +15,6 @@ public class ChampionPresenter implements ChampionContract.ChampionPresenter {
     private ChampionContract.ChampionView view;
     private Disposable disposable;
     private DataManager dataManager;
-    private AppDatabase appDatabase;
 
     public ChampionPresenter(DataManager dataManager) {
         this.dataManager = dataManager;

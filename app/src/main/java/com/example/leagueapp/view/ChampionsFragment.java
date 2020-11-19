@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.FragmentNavigator;
 import androidx.navigation.fragment.NavHostFragment;
@@ -20,13 +19,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.leagueapp.databinding.FragmentChampionsBinding;
-import com.example.leagueapp.model.DataManager;
 import com.example.leagueapp.widget.ChampionSearchView;
 import com.example.leagueapp.R;
 import com.example.leagueapp.adapter.ChampionAdapter;
 import com.example.leagueapp.contract.ChampionContract;
 import com.example.leagueapp.model.ChampionResponse;
-import com.example.leagueapp.presenter.ChampionPresenter;
 import com.google.android.material.transition.MaterialElevationScale;
 import com.google.android.material.transition.MaterialFadeThrough;
 
@@ -35,21 +32,20 @@ import org.jetbrains.annotations.NotNull;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-public class ChampionsFragment extends Fragment implements ChampionContract.ChampionView, ChampionAdapter.OnChampClickListener {
+import javax.inject.Inject;
+
+import dagger.android.support.DaggerFragment;
+
+public class ChampionsFragment extends DaggerFragment implements ChampionContract.ChampionView, ChampionAdapter.OnChampClickListener {
 
     private static final String TAG = "ChampionsFragment";
     private final String SEARCH_QUERY_KEY = "SEARCH_QUERY_KEY";
-    private final ChampionContract.ChampionPresenter championPresenter = new ChampionPresenter(new DataManager());
+
+    @Inject ChampionContract.ChampionPresenter championPresenter;
     private ChampionAdapter championAdapter;
     private FragmentChampionsBinding binding;
     private ChampionSearchView searchView;
     private String searchQuery;
-//    private AppDatabase appDatabase;
-
-
-    public ChampionsFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,7 +53,6 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
         setRetainInstance(true);
         championPresenter.onAttach(this);
         championAdapter = new ChampionAdapter(this);
-//        appDatabase = Room.databaseBuilder(this.getContext(), AppDatabase.class, "db-contacts").allowMainThreadQueries().build();
     }
 
     @Override
@@ -229,15 +224,11 @@ public class ChampionsFragment extends Fragment implements ChampionContract.Cham
     public void addToFavorites(ChampionResponse.Champion champion) {
         // TODO Add to database
         Log.d(TAG, "addToFavorite: FAVORITE -> " + champion.isFavorite);
-//        ChampionEntity entity = new ChampionEntity(champion.id, champion.key, champion.name, champion.title, champion.image.getIconUrl());
-//        appDatabase.getChampionDao().insert(entity);
     }
 
     @Override
     public void removeFromFavorites(ChampionResponse.Champion champion) {
         // TODO Remove from database
         Log.d(TAG, "removeFromFavorites: FAVORITE -> " + champion.isFavorite);
-//        ChampionEntity entity = new ChampionEntity(champion.id, champion.key, champion.name, champion.title, champion.image.getIconUrl());
-//        appDatabase.getChampionDao().delete(entity);
     }
 }
