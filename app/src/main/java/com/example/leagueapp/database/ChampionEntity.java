@@ -19,7 +19,7 @@ public class ChampionEntity {
         this.tags = tags;
     }
 
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey()
     @ColumnInfo(name = "id")
     @NonNull
     public String id;
