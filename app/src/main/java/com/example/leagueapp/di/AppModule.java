@@ -1,6 +1,7 @@
 package com.example.leagueapp.di;
 
 import com.example.leagueapp.contract.ChampionContract;
+import com.example.leagueapp.database.ChampionDao;
 import com.example.leagueapp.model.DataManager;
 import com.example.leagueapp.network.LeagueOfLegendsApi;
 import com.example.leagueapp.presenter.ChampionPresenter;
@@ -38,8 +39,8 @@ public class AppModule {
 
     @Singleton
     @Provides
-    static DataManager provideDataManager(LeagueOfLegendsApi apiService) {
-        return new DataManager(apiService);
+    static DataManager provideDataManager(LeagueOfLegendsApi apiService, ChampionDao championDao) {
+        return new DataManager(apiService, championDao);
     }
 
     @Singleton

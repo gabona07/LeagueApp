@@ -2,6 +2,7 @@ package com.example.leagueapp.di;
 
 import com.example.leagueapp.view.ChampionsFragment;
 import com.example.leagueapp.view.DetailsFragment;
+import com.example.leagueapp.view.FavoriteFragment;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -14,4 +15,7 @@ public abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract DetailsFragment contributeDetailsFragment();
+
+    @ContributesAndroidInjector
+    abstract FavoriteFragment contributeFavoriteFragment();
 }

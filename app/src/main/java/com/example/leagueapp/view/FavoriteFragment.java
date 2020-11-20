@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
@@ -22,14 +21,12 @@ import com.google.android.material.transition.MaterialFadeThrough;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FavoriteFragment extends Fragment {
+import dagger.android.support.DaggerFragment;
+
+public class FavoriteFragment extends DaggerFragment {
 
     private FavoriteAdapter adapter = new FavoriteAdapter();
     private ViewPager2 viewPager;
-
-    public FavoriteFragment() {
-        
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,11 +64,12 @@ public class FavoriteFragment extends Fragment {
         });
         viewPager.setPageTransformer(pageTransformer);
         List<ChampionEntity> championEntityList = new ArrayList<>();
-        championEntityList.add(new ChampionEntity("Aatrox", 266L, "Aatrox", "the Darkin Blade", "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg"));
-        championEntityList.add(new ChampionEntity("Aatrox", 266L, "Aatrox", "the Darkin Blade", "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg"));
-        championEntityList.add(new ChampionEntity("Aatrox", 266L, "Aatrox", "the Darkin Blade", "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg"));
-        championEntityList.add(new ChampionEntity("Aatrox", 266L, "Aatrox", "the Darkin Blade", "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg"));
-        championEntityList.add(new ChampionEntity("Aatrox", 266L, "Aatrox", "the Darkin Blade", "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg"));
+        ArrayList<String> empty = new ArrayList<>();
+//        championEntityList.add(new ChampionEntity("Aatrox", 266L, "Aatrox", "the Darkin Blade", "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg", empty));
+//        championEntityList.add(new ChampionEntity("Aatrox", 266L, "Aatrox", "the Darkin Blade", "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg", empty));
+//        championEntityList.add(new ChampionEntity("Aatrox", 266L, "Aatrox", "the Darkin Blade", "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg", empty));
+//        championEntityList.add(new ChampionEntity("Aatrox", 266L, "Aatrox", "the Darkin Blade", "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg", empty));
+//        championEntityList.add(new ChampionEntity("Aatrox", 266L, "Aatrox", "the Darkin Blade", "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg", empty));
         adapter.setChampions(championEntityList);
     }
 }

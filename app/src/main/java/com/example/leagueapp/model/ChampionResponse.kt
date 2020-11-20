@@ -2,7 +2,6 @@ package com.example.leagueapp.model
 
 import android.os.Parcel
 import android.os.Parcelable
-import java.util.ArrayList
 
 data class ChampionResponse(@JvmField val data: Map<String, Champion>) {
 
@@ -11,7 +10,7 @@ data class ChampionResponse(@JvmField val data: Map<String, Champion>) {
                         @JvmField val name: String,
                         @JvmField val title: String,
                         @JvmField val image: Image?,
-                        @JvmField val tags: ArrayList<String>?,
+                        @JvmField val tags: List<String>?,
                         @JvmField var isFavorite: Boolean) : Parcelable {
 
         data class Image(@JvmField val full: String) : Parcelable {
@@ -49,6 +48,8 @@ data class ChampionResponse(@JvmField val data: Map<String, Champion>) {
                 parcel.readByte() != 0.toByte())
 
         fun getTags(): String? = tags?.joinToString(", ") { it }
+
+        fun getChampLoadingImage(): String = "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${id}_0.jpg"
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {
             parcel.writeString(id)
