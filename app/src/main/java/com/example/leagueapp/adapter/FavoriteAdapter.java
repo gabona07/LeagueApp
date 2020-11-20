@@ -39,7 +39,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ChampionEntity currentFavorite = champions.get(position);
-        Glide.with(holder.favoriteImage).load(currentFavorite.getImage()).into(holder.favoriteImage);
+//        Glide.with(holder.favoriteImage).load(currentFavorite.getFull()).into(holder.favoriteImage);
     }
 
     @Override

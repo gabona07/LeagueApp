@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
@@ -26,9 +25,7 @@ import com.example.leagueapp.adapter.SpellsAdapter;
 import com.example.leagueapp.contract.ChampionContract;
 import com.example.leagueapp.databinding.FragmentDetailsBinding;
 import com.example.leagueapp.model.ChampionResponse;
-import com.example.leagueapp.model.DataManager;
 import com.example.leagueapp.model.DetailsResponse;
-import com.example.leagueapp.presenter.DetailsPresenter;
 import com.google.android.material.transition.MaterialContainerTransform;
 import com.google.android.material.transition.MaterialFadeThrough;
 
@@ -36,24 +33,24 @@ import org.jetbrains.annotations.NotNull;
 
 import java.net.UnknownHostException;
 
+import javax.inject.Inject;
 
-public class DetailsFragment extends Fragment implements ChampionContract.DetailsView {
+import dagger.android.support.DaggerFragment;
+
+
+public class DetailsFragment extends DaggerFragment implements ChampionContract.DetailsView {
 
     private static final String TAG = "DetailsFragment";
-    private FragmentDetailsBinding binding;
-    private DataManager dataManager = new DataManager();
-    private ChampionContract.DetailsPresenter presenter = new DetailsPresenter(dataManager);
-    private SpellsAdapter spellsAdapter = new SpellsAdapter();
 
-    public DetailsFragment() {
-        // Required empty public constructor
-    }
+    @Inject ChampionContract.DetailsPresenter detailsPresenter;
+    private FragmentDetailsBinding binding;
+    private SpellsAdapter spellsAdapter = new SpellsAdapter();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        presenter.onAttach(this);
+        detailsPresenter.onAttach(this);
 
         MaterialContainerTransform sharedElementTransition = new MaterialContainerTransform();
         long duration = getResources().getInteger(R.integer.reply_motion_duration);
@@ -79,9 +76,9 @@ public class DetailsFragment extends Fragment implements ChampionContract.Detail
             binding.error.retryButton.setOnClickListener(view1 -> {
                 view1.setVisibility(View.INVISIBLE);
                 binding.error.retryLoading.setVisibility(View.VISIBLE);
-                presenter.fetchChampionDetails(champion.id);
+                detailsPresenter.fetchChampionDetails(champion.id);
             });
-            presenter.fetchChampionDetails(champion.id);
+            detailsPresenter.fetchChampionDetails(champion.id);
         }
     }
 
@@ -113,7 +110,7 @@ public class DetailsFragment extends Fragment implements ChampionContract.Detail
 
     @Override
     public void onDestroy() {
-        presenter.onDetach();
+        detailsPresenter.onDetach();
         super.onDestroy();
     }
 
