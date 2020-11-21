@@ -20,6 +20,7 @@ public class RoomModule {
     @Provides
     static ChampionDatabase provideChampionDatabase(Application application) {
         return Room.databaseBuilder(application, ChampionDatabase.class, Constants.DATABASE_NAME)
+                .fallbackToDestructiveMigration()
                 .build();
     }
 
