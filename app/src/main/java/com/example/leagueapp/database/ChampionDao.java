@@ -8,15 +8,18 @@ import androidx.room.Query;
 
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.Single;
+
 @Dao
 public interface ChampionDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void addToFavorites(ChampionEntity champion);
+    Completable addToFavorites(ChampionEntity champion);
 
     @Delete
-    void delete(ChampionEntity champion);
+    Completable delete(ChampionEntity champion);
 
     @Query("SELECT * FROM favorites_table")
-    List<ChampionEntity> getFavorites();
+    Single<List<ChampionEntity>> getFavorites();
 }

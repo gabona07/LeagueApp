@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
-import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,22 +14,29 @@ import android.view.ViewGroup;
 
 import com.example.leagueapp.R;
 import com.example.leagueapp.adapter.FavoriteAdapter;
-import com.example.leagueapp.database.ChampionEntity;
+import com.example.leagueapp.contract.ChampionContract;
+import com.example.leagueapp.databinding.FragmentFavoriteBinding;
+import com.example.leagueapp.model.ChampionResponse;
 import com.google.android.material.transition.MaterialFadeThrough;
 
-import java.util.ArrayList;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
+
+import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 
-public class FavoriteFragment extends DaggerFragment {
+public class FavoriteFragment extends DaggerFragment implements ChampionContract.FavoriteView {
 
+    @Inject ChampionContract.FavoritePresenter favoritePresenter;
+    private FragmentFavoriteBinding binding;
     private FavoriteAdapter adapter = new FavoriteAdapter();
-    private ViewPager2 viewPager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        favoritePresenter.onAttach(this);
         MaterialFadeThrough enterTransition = new MaterialFadeThrough();
         long duration = getResources().getInteger(R.integer.reply_motion_duration);
         enterTransition.setDuration(duration);
@@ -38,23 +44,35 @@ public class FavoriteFragment extends DaggerFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_favorite, container, false);
+        binding = FragmentFavoriteBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewPager = view.findViewById(R.id.favoriteViewpager);
-        viewPagerInit();
+        favoritePresenter.getFavorites();
     }
 
+    @Override
+    public void onDestroyView() {
+        binding = null;
+        super.onDestroyView();
+    }
 
-    private void viewPagerInit() {
-        viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(3);
-        viewPager.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+    @Override
+    public void onDestroy() {
+        favoritePresenter.onDetach();
+        super.onDestroy();
+    }
+
+    @Override
+    public void displayFavoriteChampions(List<ChampionResponse.Champion> champions) {
+        binding.favoriteViewpager.setAdapter(adapter);
+        binding.favoriteViewpager.setOffscreenPageLimit(3);
+        binding.favoriteViewpager.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
         CompositePageTransformer pageTransformer = new CompositePageTransformer();
         int champCardMargin = getResources().getInteger(R.integer.viewpager_card_margin);
         pageTransformer.addTransformer(new MarginPageTransformer(champCardMargin));
@@ -62,14 +80,27 @@ public class FavoriteFragment extends DaggerFragment {
             float r = 1 - Math.abs(position);
             page.setScaleY(0.85f + r * 0.15f);
         });
-        viewPager.setPageTransformer(pageTransformer);
-        List<ChampionEntity> championEntityList = new ArrayList<>();
-        ArrayList<String> empty = new ArrayList<>();
-//        championEntityList.add(new ChampionEntity("Aatrox", 266L, "Aatrox", "the Darkin Blade", "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg", empty));
-//        championEntityList.add(new ChampionEntity("Aatrox", 266L, "Aatrox", "the Darkin Blade", "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg", empty));
-//        championEntityList.add(new ChampionEntity("Aatrox", 266L, "Aatrox", "the Darkin Blade", "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg", empty));
-//        championEntityList.add(new ChampionEntity("Aatrox", 266L, "Aatrox", "the Darkin Blade", "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg", empty));
-//        championEntityList.add(new ChampionEntity("Aatrox", 266L, "Aatrox", "the Darkin Blade", "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg", empty));
-        adapter.setChampions(championEntityList);
+        binding.favoriteViewpager.setPageTransformer(pageTransformer);
+        adapter.setChampions(champions);
+    }
+
+    @Override
+    public void displayNoFavorites() {
+
+    }
+
+    @Override
+    public void showLoading() {
+        binding.favoriteLoading.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+        binding.favoriteLoading.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onError(Exception exception) {
+
     }
 }

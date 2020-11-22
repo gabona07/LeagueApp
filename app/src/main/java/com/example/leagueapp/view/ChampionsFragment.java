@@ -222,13 +222,11 @@ public class ChampionsFragment extends DaggerFragment implements ChampionContrac
 
     @Override
     public void addToFavorites(ChampionResponse.Champion champion) {
-        // TODO Add to database
-        Log.d(TAG, "addToFavorite: FAVORITE -> " + champion.isFavorite);
+        championPresenter.saveChampion(champion);
     }
 
     @Override
     public void removeFromFavorites(ChampionResponse.Champion champion) {
-        // TODO Remove from database
-        Log.d(TAG, "removeFromFavorites: FAVORITE -> " + champion.isFavorite);
+        championPresenter.deleteChampion(champion);
     }
 }

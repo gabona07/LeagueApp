@@ -6,6 +6,7 @@ import com.example.leagueapp.model.DataManager;
 import com.example.leagueapp.network.LeagueOfLegendsApi;
 import com.example.leagueapp.presenter.ChampionPresenter;
 import com.example.leagueapp.presenter.DetailsPresenter;
+import com.example.leagueapp.presenter.FavoritePresenter;
 import com.example.leagueapp.util.Constants;
 
 import javax.inject.Singleton;
@@ -53,6 +54,12 @@ public class AppModule {
     @Provides
     static ChampionContract.DetailsPresenter provideDetailsPresenter(DataManager dataManager) {
         return new DetailsPresenter(dataManager);
+    }
+
+    @Singleton
+    @Provides
+    static ChampionContract.FavoritePresenter provideFavoritePresenter(DataManager dataManager) {
+        return new FavoritePresenter(dataManager);
     }
 
 
