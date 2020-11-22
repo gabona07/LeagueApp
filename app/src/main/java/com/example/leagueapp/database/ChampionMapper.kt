@@ -14,6 +14,8 @@ fun ChampionEntity.toChampion() = ChampionResponse.Champion(
 
 fun List<ChampionEntity>.toChampionList() = this.map { it.toChampion() }
 
+fun List<ChampionEntity>.toChampionIds() = this.map { it.id }
+
 fun ChampionResponse.Champion.toChampionEntity() = ChampionEntity(
         this.id,
         this.key,

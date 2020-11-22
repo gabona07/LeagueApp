@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,8 @@ import dagger.android.support.DaggerFragment;
 
 public class FavoriteFragment extends DaggerFragment implements ChampionContract.FavoriteView {
 
+    private static final String TAG = "FavoriteFragment";
+
     @Inject ChampionContract.FavoritePresenter favoritePresenter;
     private FragmentFavoriteBinding binding;
     private FavoriteAdapter adapter = new FavoriteAdapter();
@@ -47,6 +50,7 @@ public class FavoriteFragment extends DaggerFragment implements ChampionContract
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentFavoriteBinding.inflate(inflater, container, false);
+        binding.favoriteViewpager.setAdapter(adapter);
         return binding.getRoot();
     }
 
@@ -70,7 +74,6 @@ public class FavoriteFragment extends DaggerFragment implements ChampionContract
 
     @Override
     public void displayFavoriteChampions(List<ChampionResponse.Champion> champions) {
-        binding.favoriteViewpager.setAdapter(adapter);
         binding.favoriteViewpager.setOffscreenPageLimit(3);
         binding.favoriteViewpager.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
         CompositePageTransformer pageTransformer = new CompositePageTransformer();
@@ -86,7 +89,7 @@ public class FavoriteFragment extends DaggerFragment implements ChampionContract
 
     @Override
     public void displayNoFavorites() {
-
+        Log.d(TAG, "displayNoFavorites: NO FAVORITES");
     }
 
     @Override

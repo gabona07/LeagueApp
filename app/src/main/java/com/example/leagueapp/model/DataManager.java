@@ -2,8 +2,10 @@ package com.example.leagueapp.model;
 
 import com.example.leagueapp.database.ChampionDao;
 import com.example.leagueapp.database.ChampionEntity;
+import com.example.leagueapp.database.ChampionMapperKt;
 import com.example.leagueapp.network.LeagueOfLegendsApi;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Completable;
@@ -19,8 +21,17 @@ public class DataManager {
         this.championDao = championDao;
     }
 
-    public Single<ChampionResponse> getChampions() {
-        return apiService.getChampions();
+    public Single<List<ChampionResponse.Champion>> getChampions() {
+        return Single.zip(apiService.getChampions(), championDao.getFavorites(), (championResponse, championEntities) -> {
+            List<String> favoriteChampionIds = ChampionMapperKt.toChampionIds(championEntities);
+            List<ChampionResponse.Champion> champions = new ArrayList<>(championResponse.data.values());
+            for (ChampionResponse.Champion champion : champions) {
+                if (favoriteChampionIds.contains(champion.id)) {
+                    champion.isFavorite = true;
+                }
+            }
+            return champions;
+        });
     }
 
     public Single<DetailsResponse> getChampionDetails(String championId) {return apiService.getChampionDetails(championId);}

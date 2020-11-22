@@ -40,7 +40,11 @@ public class FavoritePresenter implements ChampionContract.FavoritePresenter {
                     public void onSuccess(List<ChampionEntity> championEntities) {
                         List<ChampionResponse.Champion> championList = ChampionMapperKt.toChampionList(championEntities);
                         view.hideLoading();
-                        view.displayFavoriteChampions(championList);
+                        if (championList.isEmpty()) {
+                            view.displayNoFavorites();
+                        } else {
+                            view.displayFavoriteChampions(championList);
+                        }
                     }
 
                     @Override

@@ -6,7 +6,7 @@ import com.example.leagueapp.database.ChampionEntity;
 import com.example.leagueapp.model.ChampionResponse;
 import com.example.leagueapp.model.DataManager;
 import com.example.leagueapp.database.ChampionMapperKt;
-import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.CompletableObserver;
 import io.reactivex.SingleObserver;
@@ -30,26 +30,25 @@ public class ChampionPresenter implements ChampionContract.ChampionPresenter {
         dataManager.getChampions()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<ChampionResponse>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                disposable = d;
-            }
+                .subscribe(new SingleObserver<List<ChampionResponse.Champion>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        disposable = d;
+                    }
 
-            @Override
-            public void onSuccess(ChampionResponse championResponse) {
-                view.hideLoading();
-                ArrayList<ChampionResponse.Champion> champions = new ArrayList<>(championResponse.data.values());
-                view.displayChampions(champions);
-            }
+                    @Override
+                    public void onSuccess(List<ChampionResponse.Champion> champions) {
+                        view.hideLoading();
+                        view.displayChampions(champions);
+                    }
 
-            @Override
-            public void onError(Throwable e) {
-                Exception exception = new Exception(e);
-                view.hideLoading();
-                view.onError(exception);
-            }
-        });
+                    @Override
+                    public void onError(Throwable e) {
+                        Exception exception = new Exception(e);
+                        view.hideLoading();
+                        view.onError(exception);
+                    }
+                });
     }
 
     @Override

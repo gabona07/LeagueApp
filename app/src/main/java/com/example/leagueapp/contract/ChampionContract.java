@@ -3,13 +3,12 @@ package com.example.leagueapp.contract;
 import com.example.leagueapp.model.ChampionResponse;
 import com.example.leagueapp.model.DetailsResponse;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface ChampionContract {
 
     interface ChampionView extends BaseContract.BaseView {
-        void displayChampions(ArrayList<ChampionResponse.Champion> champions);
+        void displayChampions(List<ChampionResponse.Champion> champions);
     }
 
     interface ChampionPresenter extends BaseContract.BasePresenter {

@@ -30,7 +30,7 @@ import com.google.android.material.transition.MaterialFadeThrough;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.UnknownHostException;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -193,7 +193,7 @@ public class ChampionsFragment extends DaggerFragment implements ChampionContrac
     }
 
     @Override
-    public void displayChampions(ArrayList<ChampionResponse.Champion> champions) {
+    public void displayChampions(List<ChampionResponse.Champion> champions) {
         binding.error.errorContainer.setVisibility(View.GONE);
         championAdapter.setChampionList(champions);
     }
