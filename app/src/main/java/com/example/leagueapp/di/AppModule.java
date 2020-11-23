@@ -1,11 +1,17 @@
 package com.example.leagueapp.di;
 
+import android.app.Application;
+
+import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.request.RequestOptions;
+import com.example.leagueapp.R;
 import com.example.leagueapp.contract.ChampionContract;
 import com.example.leagueapp.database.ChampionDao;
 import com.example.leagueapp.model.DataManager;
 import com.example.leagueapp.network.LeagueOfLegendsApi;
 import com.example.leagueapp.presenter.ChampionPresenter;
 import com.example.leagueapp.presenter.DetailsPresenter;
+import com.example.leagueapp.presenter.FavoritePresenter;
 import com.example.leagueapp.util.Constants;
 
 import javax.inject.Singleton;
@@ -19,6 +25,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class AppModule {
+
+    @Singleton
+    @Provides
+    static RequestOptions provideRequestOptions() {
+        return RequestOptions
+                .placeholderOf(R.drawable.placeholder_background)
+                .error(R.drawable.placeholder_background);
+    }
+
+    @Singleton
+    @Provides
+    static RequestManager provideGlideInstance(Application application, RequestOptions requestOptions) {
+        return GlideApp.with(application).applyDefaultRequestOptions(requestOptions);
+    }
 
     @Singleton
     @Provides
@@ -53,6 +73,12 @@ public class AppModule {
     @Provides
     static ChampionContract.DetailsPresenter provideDetailsPresenter(DataManager dataManager) {
         return new DetailsPresenter(dataManager);
+    }
+
+    @Singleton
+    @Provides
+    static ChampionContract.FavoritePresenter provideFavoritePresenter(DataManager dataManager) {
+        return new FavoritePresenter(dataManager);
     }
 
 

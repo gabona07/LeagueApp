@@ -11,6 +11,7 @@
         <item name="colorSurface">@color/colorSurface</item>
         <item name="colorOnSurface">@color/colorOnSurface</item>
         <item name="colorOnPrimarySurface">@color/colorOnPrimarySurface</item>
+        <item name="actionBarSize">50dp</item>
     </style>
 
     <style name="SplashScreenTheme" parent = "Theme.AppCompat.NoActionBar">

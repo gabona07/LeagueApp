@@ -8,16 +8,21 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.example.leagueapp.R;
-import com.example.leagueapp.database.ChampionEntity;
+import com.example.leagueapp.model.ChampionResponse;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHolder> {
 
-    private List<ChampionEntity> champions = new ArrayList<>();
+    private List<ChampionResponse.Champion> champions = new ArrayList<>();
+    private RequestManager requestManager;
+
+    public FavoriteAdapter(RequestManager requestManager) {
+        this.requestManager = requestManager;
+    }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -38,8 +43,8 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ChampionEntity currentFavorite = champions.get(position);
-//        Glide.with(holder.favoriteImage).load(currentFavorite.getFull()).into(holder.favoriteImage);
+        ChampionResponse.Champion currentFavorite = champions.get(position);
+        requestManager.load(currentFavorite.getChampLoadingImage()).into(holder.favoriteImage);
     }
 
     @Override
@@ -47,7 +52,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         return champions.size();
     }
 
-    public void setChampions(List<ChampionEntity> champions) {
+    public void setChampions(List<ChampionResponse.Champion> champions) {
         this.champions = champions;
         notifyDataSetChanged();
     }

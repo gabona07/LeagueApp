@@ -14,7 +14,7 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.example.leagueapp.R;
 import com.example.leagueapp.model.ChampionResponse;
 
@@ -25,11 +25,13 @@ import java.util.List;
 public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHolder> implements Filterable {
 
     private OnChampClickListener onChampClickListener;
+    private RequestManager requestManager;
     private List<ChampionResponse.Champion> championList = new ArrayList<>();
     private List<ChampionResponse.Champion> championListFull = new ArrayList<>(championList);
 
-    public ChampionAdapter(OnChampClickListener onChampClickListener) {
+    public ChampionAdapter(OnChampClickListener onChampClickListener, RequestManager requestManager) {
         this.onChampClickListener = onChampClickListener;
+        this.requestManager = requestManager;
         setHasStableIds(true);
     }
 
@@ -123,8 +125,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.ViewHo
         ChampionResponse.Champion currentChampion = championList.get(position);
         holder.cardView.setTransitionName(currentChampion.id);
         if (currentChampion.image != null) {
-            Glide.with(holder.championIcon)
-                    .load(currentChampion.image.getIconUrl())
+            requestManager.load(currentChampion.image.getIconUrl())
                     .into(holder.championIcon);
         }
         holder.championName.setText(currentChampion.name);

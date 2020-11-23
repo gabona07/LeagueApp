@@ -15,4 +15,6 @@
     <string name="connection_error_message">Your\'re offline. Check your connection.</string>
     <string name="generic_error_message">An unexpected error occurred. Please try again.</string>
     <string name="retry_button_text">Retry</string>
+    <string name="empty_favorites_title">Your list is empty</string>
+    <string name="empty_favorites_message">You don\'t have any favorite champions.</string>
 </resources>

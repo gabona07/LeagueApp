@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.RequestManager;
 import com.example.leagueapp.databinding.FragmentChampionsBinding;
 import com.example.leagueapp.widget.ChampionSearchView;
 import com.example.leagueapp.R;
@@ -30,7 +31,7 @@ import com.google.android.material.transition.MaterialFadeThrough;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.UnknownHostException;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -42,6 +43,7 @@ public class ChampionsFragment extends DaggerFragment implements ChampionContrac
     private final String SEARCH_QUERY_KEY = "SEARCH_QUERY_KEY";
 
     @Inject ChampionContract.ChampionPresenter championPresenter;
+    @Inject RequestManager requestManager;
     private ChampionAdapter championAdapter;
     private FragmentChampionsBinding binding;
     private ChampionSearchView searchView;
@@ -52,7 +54,7 @@ public class ChampionsFragment extends DaggerFragment implements ChampionContrac
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         championPresenter.onAttach(this);
-        championAdapter = new ChampionAdapter(this);
+        championAdapter = new ChampionAdapter(this, requestManager);
     }
 
     @Override
@@ -193,7 +195,7 @@ public class ChampionsFragment extends DaggerFragment implements ChampionContrac
     }
 
     @Override
-    public void displayChampions(ArrayList<ChampionResponse.Champion> champions) {
+    public void displayChampions(List<ChampionResponse.Champion> champions) {
         binding.error.errorContainer.setVisibility(View.GONE);
         championAdapter.setChampionList(champions);
     }
@@ -222,13 +224,11 @@ public class ChampionsFragment extends DaggerFragment implements ChampionContrac
 
     @Override
     public void addToFavorites(ChampionResponse.Champion champion) {
-        // TODO Add to database
-        Log.d(TAG, "addToFavorite: FAVORITE -> " + champion.isFavorite);
+        championPresenter.saveChampion(champion);
     }
 
     @Override
     public void removeFromFavorites(ChampionResponse.Champion champion) {
-        // TODO Remove from database
-        Log.d(TAG, "removeFromFavorites: FAVORITE -> " + champion.isFavorite);
+        championPresenter.deleteChampion(champion);
     }
 }
