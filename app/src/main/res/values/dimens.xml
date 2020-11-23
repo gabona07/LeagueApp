@@ -38,5 +38,10 @@
     <dimen name="retry_loading_margin">16dp</dimen>
     <dimen name="favorite_button_size">30dp</dimen>
     <dimen name="champ_icon_margin">5dp</dimen>
+    <dimen name="empty_favorites_padding">10dp</dimen>
+    <dimen name="empty_favorites_image_size">150dp</dimen>
+    <dimen name="empty_favorites_title_padding">8dp</dimen>
+    <dimen name="empty_favorites_message_margin">4dp</dimen>
+    <dimen name="favorite_viewpager_padding">60dp</dimen>
     <integer name="viewpager_card_margin">8</integer>
 </resources>
