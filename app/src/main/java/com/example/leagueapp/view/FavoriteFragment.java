@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +28,6 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerFragment;
 
 public class FavoriteFragment extends DaggerFragment implements ChampionContract.FavoriteView {
-
-    private static final String TAG = "FavoriteFragment";
 
     @Inject ChampionContract.FavoritePresenter favoritePresenter;
     private FragmentFavoriteBinding binding;
@@ -89,7 +86,7 @@ public class FavoriteFragment extends DaggerFragment implements ChampionContract
 
     @Override
     public void displayNoFavorites() {
-        Log.d(TAG, "displayNoFavorites: NO FAVORITES");
+        binding.emptyFavorites.emptyFavoritesContainer.setVisibility(View.VISIBLE);
     }
 
     @Override
