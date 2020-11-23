@@ -1,5 +1,10 @@
 package com.example.leagueapp.di;
 
+import android.app.Application;
+
+import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.request.RequestOptions;
+import com.example.leagueapp.R;
 import com.example.leagueapp.contract.ChampionContract;
 import com.example.leagueapp.database.ChampionDao;
 import com.example.leagueapp.model.DataManager;
@@ -20,6 +25,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class AppModule {
+
+    @Singleton
+    @Provides
+    static RequestOptions provideRequestOptions() {
+        return RequestOptions
+                .placeholderOf(R.drawable.placeholder_background)
+                .error(R.drawable.placeholder_background);
+    }
+
+    @Singleton
+    @Provides
+    static RequestManager provideGlideInstance(Application application, RequestOptions requestOptions) {
+        return GlideApp.with(application).applyDefaultRequestOptions(requestOptions);
+    }
 
     @Singleton
     @Provides

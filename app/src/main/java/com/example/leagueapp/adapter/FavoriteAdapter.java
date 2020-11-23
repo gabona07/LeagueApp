@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.example.leagueapp.R;
 import com.example.leagueapp.model.ChampionResponse;
 
@@ -18,6 +18,11 @@ import java.util.List;
 public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHolder> {
 
     private List<ChampionResponse.Champion> champions = new ArrayList<>();
+    private RequestManager requestManager;
+
+    public FavoriteAdapter(RequestManager requestManager) {
+        this.requestManager = requestManager;
+    }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -39,9 +44,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ChampionResponse.Champion currentFavorite = champions.get(position);
-        Glide.with(holder.favoriteImage)
-                .load(currentFavorite.getChampLoadingImage())
-                .into(holder.favoriteImage);
+        requestManager.load(currentFavorite.getChampLoadingImage()).into(holder.favoriteImage);
     }
 
     @Override

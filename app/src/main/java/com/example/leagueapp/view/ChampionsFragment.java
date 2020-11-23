@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.RequestManager;
 import com.example.leagueapp.databinding.FragmentChampionsBinding;
 import com.example.leagueapp.widget.ChampionSearchView;
 import com.example.leagueapp.R;
@@ -42,6 +43,7 @@ public class ChampionsFragment extends DaggerFragment implements ChampionContrac
     private final String SEARCH_QUERY_KEY = "SEARCH_QUERY_KEY";
 
     @Inject ChampionContract.ChampionPresenter championPresenter;
+    @Inject RequestManager requestManager;
     private ChampionAdapter championAdapter;
     private FragmentChampionsBinding binding;
     private ChampionSearchView searchView;
@@ -52,7 +54,7 @@ public class ChampionsFragment extends DaggerFragment implements ChampionContrac
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         championPresenter.onAttach(this);
-        championAdapter = new ChampionAdapter(this);
+        championAdapter = new ChampionAdapter(this, requestManager);
     }
 
     @Override

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.RequestManager;
 import com.example.leagueapp.R;
 import com.example.leagueapp.adapter.FavoriteAdapter;
 import com.example.leagueapp.contract.ChampionContract;
@@ -30,13 +31,15 @@ import dagger.android.support.DaggerFragment;
 public class FavoriteFragment extends DaggerFragment implements ChampionContract.FavoriteView {
 
     @Inject ChampionContract.FavoritePresenter favoritePresenter;
+    @Inject RequestManager requestManager;
     private FragmentFavoriteBinding binding;
-    private FavoriteAdapter adapter = new FavoriteAdapter();
+    private FavoriteAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         favoritePresenter.onAttach(this);
+        adapter = new FavoriteAdapter(requestManager);
         MaterialFadeThrough enterTransition = new MaterialFadeThrough();
         long duration = getResources().getInteger(R.integer.reply_motion_duration);
         enterTransition.setDuration(duration);

@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.example.leagueapp.R;
 import com.example.leagueapp.model.DetailsResponse;
 
@@ -20,8 +20,13 @@ import java.util.List;
 public class SpellsAdapter extends RecyclerView.Adapter<SpellsAdapter.ViewHolder> {
 
     private List<DetailsResponse.Detail.Spell> spells = new ArrayList<>();
+    private RequestManager requestManager;
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    public SpellsAdapter(RequestManager requestManager) {
+        this.requestManager = requestManager;
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
         final ImageView spellIcon;
         final TextView spellName;
@@ -45,9 +50,7 @@ public class SpellsAdapter extends RecyclerView.Adapter<SpellsAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DetailsResponse.Detail.Spell currentSpell = spells.get(position);
-        Glide.with(holder.spellIcon)
-                .load(currentSpell.image.getSpellIcon())
-                .into(holder.spellIcon);
+        requestManager.load(currentSpell.image.getSpellIcon()).into(holder.spellIcon);
         holder.spellName.setText(currentSpell.name);
         holder.spellDescription.setText(Html.fromHtml(currentSpell.description));
     }

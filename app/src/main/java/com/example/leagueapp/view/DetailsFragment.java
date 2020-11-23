@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.example.leagueapp.R;
 import com.example.leagueapp.adapter.SpellsAdapter;
 import com.example.leagueapp.contract.ChampionContract;
@@ -43,14 +44,16 @@ public class DetailsFragment extends DaggerFragment implements ChampionContract.
     private static final String TAG = "DetailsFragment";
 
     @Inject ChampionContract.DetailsPresenter detailsPresenter;
+    @Inject RequestManager requestManager;
     private FragmentDetailsBinding binding;
-    private SpellsAdapter spellsAdapter = new SpellsAdapter();
+    private SpellsAdapter spellsAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         detailsPresenter.onAttach(this);
+        spellsAdapter = new SpellsAdapter(requestManager);
 
         MaterialContainerTransform sharedElementTransition = new MaterialContainerTransform();
         long duration = getResources().getInteger(R.integer.reply_motion_duration);
