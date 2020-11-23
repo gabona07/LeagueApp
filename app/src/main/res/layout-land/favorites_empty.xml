@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/emptyFavoritesContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:padding="@dimen/empty_favorites_padding"
+    tools:background="?attr/background">
+
+    <ImageView
+        android:id="@+id/noFavoritesImage"
+        android:layout_width="@dimen/empty_favorites_image_size"
+        android:layout_height="@dimen/empty_favorites_image_size"
+        android:src="@drawable/favorites_empty"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/noFavoritesTitle"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/noFavoritesTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/empty_favorites_title_padding"
+        android:text="@string/empty_favorites_title"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/colorOnBackground"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/noFavoritesMessage"
+        app:layout_constraintLeft_toRightOf="@+id/noFavoritesImage"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/noFavoritesImage"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/noFavoritesMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/empty_favorites_message_margin"
+        android:text="@string/empty_favorites_message"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/colorOnBackground"
+        app:layout_constraintBottom_toBottomOf="@id/noFavoritesImage"
+        app:layout_constraintLeft_toLeftOf="@id/noFavoritesTitle"
+        app:layout_constraintRight_toRightOf="@id/noFavoritesTitle"
+        app:layout_constraintTop_toBottomOf="@+id/noFavoritesTitle" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

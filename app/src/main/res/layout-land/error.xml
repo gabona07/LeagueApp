@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/errorContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:padding="@dimen/error_container_padding"
+    tools:background="?attr/background">
+
+    <ImageView
+        android:id="@+id/errorImage"
+        android:layout_width="@dimen/error_image_size"
+        android:layout_height="@dimen/error_image_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/errorTitle"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/error_connection" />
+
+    <TextView
+        android:id="@+id/errorTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/error_title_margin"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/colorOnBackground"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@id/errorImage"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/errorImage"
+        tools:text="Connect to the internet" />
+
+    <TextView
+        android:id="@+id/errorMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/error_message_margin"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/colorOnBackground"
+        app:layout_constraintLeft_toLeftOf="@id/errorTitle"
+        app:layout_constraintRight_toRightOf="@id/errorTitle"
+        app:layout_constraintTop_toBottomOf="@+id/errorTitle"
+        tools:text="Your\'re offline. Check your connection." />
+
+    <ProgressBar
+        android:id="@+id/retryLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/retry_loading_margin"
+        android:visibility="invisible"
+        app:layout_constraintLeft_toLeftOf="@id/errorMessage"
+        app:layout_constraintRight_toRightOf="@id/errorMessage"
+        app:layout_constraintTop_toBottomOf="@+id/errorMessage" />
+
+    <Button
+        android:id="@+id/retryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:text="@string/retry_button_text"
+        android:textColor="@color/colorOnBackground"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/retryLoading"
+        app:layout_constraintLeft_toLeftOf="@id/errorMessage"
+        app:layout_constraintRight_toRightOf="@id/errorMessage"
+        app:layout_constraintTop_toTopOf="@+id/retryLoading" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
