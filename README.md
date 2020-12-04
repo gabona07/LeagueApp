@@ -8,6 +8,7 @@ Language tutor app by Gabriella Bona and Bendegúz Tajti
 - Dagger2
 - Retrofit
 - Glide
+- View Binding
 - Material Design
 - Shape Shifter
 
